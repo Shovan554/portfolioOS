@@ -8,7 +8,6 @@ import skillsIcon from '../assets/icons/skills.png';
 import proficiencyIcon from '../assets/icons/proficiency.png';
 import experienceIcon from '../assets/icons/experience.png';
 import educationIcon from '../assets/icons/education.png';
-import projectsIcon from '../assets/icons/projects.png';
 
 const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpenWindow, windowZIndex }) => {
   const location = useLocation();
@@ -56,11 +55,7 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
       icon: educationIcon,
       path: '/education'
     },
-    {
-      name: 'Projects',
-      icon: projectsIcon,
-      path: '/projects'
-    }
+   
   ];
 
   const handleNavClick = (path) => {

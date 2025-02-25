@@ -2,14 +2,13 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  width: 80%;
-  max-width: 800px;
   position: absolute;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   z-index: 10;
   border: 1px solid #ccc;
+  /* Remove width: 80% and max-width: 800px to use the fixed width from props */
 }
 
 .window-title-bar {
@@ -22,6 +21,7 @@
   cursor: move;
   user-select: none;
   height: 30px;
+  flex-shrink: 0; /* Prevent title bar from shrinking */
 }
 
 .window-title {
@@ -79,15 +79,16 @@
 
 .window-content {
   padding: 16px;
-  overflow: auto;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
   flex: 1;
   background-color: #f5f5f5;
-  min-height: 200px;
+  height: calc(100% - 30px - 32px); /* Subtract title bar height and padding */
 }
 
 .window-box.maximized {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for top menubar */
+  width: 100% !important;
+  height: calc(100vh - 60px) !important; /* Account for top menubar */
   max-width: none;
   top: 30px !important;
   left: 0 !important;

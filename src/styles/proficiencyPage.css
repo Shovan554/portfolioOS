@@ -1,0 +1,140 @@
+/* Proficiency Page Styles */
+.proficiency-intro {
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.proficiency-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.proficiency-item {
+  width: 100%;
+}
+
+.proficiency-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.proficiency-skill {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #243A62;
+}
+
+.proficiency-percentage {
+  font-weight: 600;
+  color: #01a7a8;
+}
+
+.progress-bar-container {
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #01a7a8, #243A62);
+  border-radius: 10px;
+  transition: width 1.5s ease-in-out;
+  position: relative;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%
+  );
+  background-size: 20px 20px;
+  animation: move-stripes 2s linear infinite;
+}
+
+@keyframes move-stripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+.proficiency-note {
+  background-color: rgba(1, 167, 168, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border-left: 4px solid #01a7a8;
+}
+
+.proficiency-note h3 {
+  color: #01a7a8;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.proficiency-note p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Dark mode support */
+body.dark-mode .proficiency-skill {
+  color: #61dafb;
+}
+
+body.dark-mode .proficiency-percentage {
+  color: #b7ff00;
+}
+
+body.dark-mode .progress-bar {
+  background: linear-gradient(90deg, #61dafb, #b7ff00);
+}
+
+body.dark-mode .progress-bar-container {
+  background-color: #1e3a5f;
+}
+
+body.dark-mode .proficiency-note {
+  background-color: rgba(97, 218, 251, 0.05);
+  border-left: 4px solid #61dafb;
+}
+
+body.dark-mode .proficiency-note h3 {
+  color: #61dafb;
+}
+
+body.dark-mode .proficiency-intro,
+body.dark-mode .proficiency-note p {
+  color: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .proficiency-container {
+    gap: 20px;
+  }
+  
+  .proficiency-skill {
+    font-size: 1rem;
+  }
+}

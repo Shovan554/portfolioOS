@@ -6,7 +6,7 @@
   background: rgba(1, 167, 168, 0.95);
   border-top: 2px solid #000;
   z-index: 1000;
-  height: 35px;
+  height: 45px;
 }
 
 .nav-container {
@@ -40,14 +40,14 @@
 .home-button {
   position: absolute;
   left: 0;
-  margin: 0;
-  padding: 0;
+  margin: 2px;
+  padding-bottom:  2px;
   border: 0;
 }
 
 .nav-icon {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   transition: all 0.3s ease;
   filter: brightness(0) invert(1); /* Makes the icon white */
@@ -59,9 +59,10 @@
   transform: scale(1.1);
 }
 
-.nav-item.minimized .nav-icon {
-  filter: invert(36%) sepia(99%) saturate(1217%) hue-rotate(194deg) brightness(101%) contrast(101%); /* Blue color for minimized windows */
-}
+/* Removing the special icon styling for minimized windows */
+/* .nav-item.minimized .nav-icon {
+  filter: invert(36%) sepia(99%) saturate(1217%) hue-rotate(194deg) brightness(101%) contrast(101%);
+} */
 
 .nav-text {
   font-size: 0.9rem;
@@ -99,7 +100,8 @@
 
 .nav-item.minimized::after {
   width: 100%;
-  background: #007bff; /* Blue indicator for minimized windows */
+  background: #617718; /* Dark blue for minimized windows */
+  height: 4px; /* Made even thicker for better visibility */
 }
 
 .nav-item:hover::after,
@@ -137,8 +139,8 @@
   
   .home-button {
     position: absolute;
-    left: 0;
-    margin: 0;
+    left: 2;
+    margin-left:100px;
     padding: 0;
   }
 }

@@ -11,7 +11,9 @@ const WindowBox = ({
   onFocus,
   initialPosition = null,
   onPositionChange,
-  isLoading = false
+  isLoading = false,
+  width = 1000,  // Default width
+  height = 700  // Default height
 }) => {
   console.log(`WindowBox ${title} rendering, isOpen:`, isOpen);
   
@@ -45,7 +47,7 @@ const WindowBox = ({
         hasBeenCentered.current = true;
       }
     }
-  }, [isOpen, initialPosition]);
+  }, [isOpen, initialPosition, onPositionChange, isLoading, title]);
   
   // Update position when initialPosition changes and is not null
   useEffect(() => {
@@ -116,7 +118,7 @@ const WindowBox = ({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, dragOffset]);
+  }, [isDragging, dragOffset, onPositionChange]);
   
   if (!isOpen) {
     return null;
@@ -129,7 +131,9 @@ const WindowBox = ({
       style={{
         left: isMaximized ? 0 : `${position.x}px`,
         top: isMaximized ? 30 : `${position.y}px`,
-        zIndex: zIndex
+        zIndex: zIndex,
+        width: isMaximized ? '100%' : `${width}px`,
+        height: isMaximized ? 'calc(100vh - 60px)' : `${height}px`
       }}
       onMouseDown={handleMouseDown}
       onClick={onFocus}
