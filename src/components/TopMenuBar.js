@@ -134,7 +134,7 @@ const TopMenuBar = () => {
             {showProjectsDropdown && (
               <div className="dropdown-menu">
                 <a 
-                  href="https://github.com/Shovan554/portfolio-os" 
+                  href="https://github.com/Shovan554/portfolioOS" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="dropdown-item"

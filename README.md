@@ -2,7 +2,7 @@
 
 A creative portfolio website designed to mimic an operating system interface.
 
-![Portfolio OS Screenshot](screenshot.png)
+
 
 ## 🚀 Features
 
@@ -23,7 +23,7 @@ A creative portfolio website designed to mimic an operating system interface.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Shovan554/portfolio-os.git
+   git clone https://github.com/Shovan554/portfolioOS
    ```
 
 2. Navigate to the project directory:
