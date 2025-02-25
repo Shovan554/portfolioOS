@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Portfolio OS",
+  "name": "Shovan Raut - Portfolio OS",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,9 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#243A62",
+  "background_color": "#243A62",
+  "description": "Interactive OS-style portfolio showcasing Shovan Raut's projects and skills",
+  "orientation": "portrait",
+  "categories": ["portfolio", "developer", "web development"]
 }

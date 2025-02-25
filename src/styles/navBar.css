@@ -1,0 +1,144 @@
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(1, 167, 168, 0.95);
+  border-top: 2px solid #000;
+  z-index: 1000;
+  height: 35px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+  gap: 2px;  /* 2px gap between nav items */
+  padding: 0;
+  width: 100%;
+  margin: 0;
+  position: relative;
+}
+
+.nav-item {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'YourFontName', sans-serif;
+  font-size: 1.1rem;
+  padding: 0 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Home button specific styling */
+.home-button {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.nav-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  filter: brightness(0) invert(1); /* Makes the icon white */
+}
+
+.nav-item.active .nav-icon,
+.nav-item:hover .nav-icon {
+  filter: invert(88%) sepia(41%) saturate(1033%) hue-rotate(41deg) brightness(101%) contrast(102%); /* Makes the icon neon green */
+  transform: scale(1.1);
+}
+
+.nav-item.minimized .nav-icon {
+  filter: invert(36%) sepia(99%) saturate(1217%) hue-rotate(194deg) brightness(101%) contrast(101%); /* Blue color for minimized windows */
+}
+
+.nav-text {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.nav-item:hover .nav-text {
+  opacity: 1;
+  visibility: visible;
+  bottom: calc(100% + 5px);
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: rgb(183, 255, 0);
+  transition: width 0.3s ease;
+}
+
+.nav-item.minimized::after {
+  width: 100%;
+  background: #007bff; /* Blue indicator for minimized windows */
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+.nav-item.active {
+  color: rgb(183, 255, 0);
+}
+
+.nav-item:hover {
+  color: rgb(183, 255, 0);
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .nav-item {
+    font-size: 0.8rem;
+    padding: 0;
+  }
+  
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .nav-text {
+    font-size: 0.7rem;
+  }
+  
+  .home-button {
+    position: absolute;
+    left: 0;
+    margin: 0;
+    padding: 0;
+  }
+}

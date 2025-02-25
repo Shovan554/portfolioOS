@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #243A62; /* Ensure background color is applied */
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -35,4 +41,23 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+body.dark-mode {
+  background-color: #2A5465;
+  color: #f0f0f0;
+}
+
+body.dark-mode .grid-overlay {
+  opacity: 0.2;
+  background-image: linear-gradient(#2973B2 1px, transparent 1px),
+    linear-gradient(90deg, #2973B2 1px, transparent 1px);
+}
+
+body.dark-mode .main-content {
+  background-color: #2A5465;
+}
+
+body.dark-mode .App {
+  background-color: #2A5465;
 }

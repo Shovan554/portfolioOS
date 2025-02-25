@@ -1,0 +1,54 @@
+/* Dark Mode Global Styles */
+body.dark-mode {
+  background-color: #2A5465;
+  color: #f0f0f0;
+}
+
+body.dark-mode .grid-overlay {
+  opacity: 0.2;
+  background-image: linear-gradient(#2973B2 1px, transparent 1px),
+    linear-gradient(90deg, #2973B2 1px, transparent 1px);
+}
+
+body.dark-mode .main-content {
+  background-color: #2A5465;
+}
+
+body.dark-mode .App {
+  background-color: #2A5465;
+}
+
+/* Window styles */
+body.dark-mode .window-box {
+  background-color: #1E3D4A;
+  border-color: #2973B2;
+}
+
+body.dark-mode .window-content {
+  background-color: #1E3D4A;
+  color: #f0f0f0;
+}
+
+body.dark-mode .window-title-bar {
+  background-color: #2973B2;
+}
+
+/* Text styles */
+body.dark-mode .page-content h1 {
+  color: #61dafb;
+}
+
+body.dark-mode .page-content p {
+  color: #f0f0f0;
+}
+
+/* Page backgrounds */
+body.dark-mode .home-page,
+body.dark-mode .skills-page,
+body.dark-mode .loading-page,
+body.dark-mode .education-page,
+body.dark-mode .experience-page,
+body.dark-mode .projects-page,
+body.dark-mode .proficiency-page {
+  background-color: #2A5465;
+}

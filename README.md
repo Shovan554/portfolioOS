@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# Portfolio OS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A creative portfolio website designed to mimic an operating system interface.
 
-## Available Scripts
+![Portfolio OS Screenshot](screenshot.png)
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- **OS-like Interface**: Complete with a top menu bar, desktop, and taskbar
+- **Interactive Windows**: Open, close, minimize, and resize windows
+- **Dark Mode**: Toggle between light and dark themes
+- **Responsive Design**: Works on desktop and mobile devices
+- **Project Showcase**: View my projects in a unique and interactive way
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 💻 Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React.js
+- CSS3
+- JavaScript (ES6+)
+- Create React App
 
-### `npm test`
+## 🛠️ Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Shovan554/portfolio-os.git
+   ```
 
-### `npm run build`
+2. Navigate to the project directory:
+   ```bash
+   cd portfolio-os
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Start the development server:
+   ```bash
+   npm start
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### `npm run eject`
+## 📱 Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Click on the navigation icons in the taskbar to open different sections
+- Use the top menu bar to access projects, resume, and social links
+- Toggle dark mode in the Settings dropdown
+- Interact with windows by dragging, resizing, minimizing, or closing them
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🔗 Links
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- [Live Demo](https://your-portfolio-url.com)
+- [GitHub Repository](https://github.com/Shovan554/portfolio-os)
+- [LinkedIn](https://www.linkedin.com/in/shovan-raut-81537b18a/)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📄 License
 
-## Learn More
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 👨‍💻 About Me
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+I'm Shovan Raut, a software developer passionate about creating intuitive and engaging user experiences. This portfolio showcases my projects and skills in a unique OS-inspired interface.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feel free to reach out to me for collaborations or opportunities!

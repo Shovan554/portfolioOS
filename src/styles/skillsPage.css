@@ -1,0 +1,42 @@
+.skills-page {
+  background-color: #243A62;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(black 1px, transparent 1px),
+    linear-gradient(90deg, black 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.2;
+}
+
+.skills-content {
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+
+.skills-content h1 {
+  color: rgb(183, 255, 0);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+body.dark-mode .skills-page {
+  background-color: #2A5465;
+}
+
+body.dark-mode .grid-overlay {
+  background-image: linear-gradient(#2973B2 1px, transparent 1px),
+    linear-gradient(90deg, #2973B2 1px, transparent 1px);
+}
