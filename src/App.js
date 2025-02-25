@@ -12,9 +12,12 @@ import NavBar from './components/navBar';
 import TopMenuBar from './components/TopMenuBar';
 import './App.css';
 import './styles/darkMode.css'; // Import the dark mode styles
+import './styles/desktop.css'; // Import the desktop styles for help button and help box
 
 function App() {
+  // Force isLoading to true on initial render
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingStartTime] = useState(Date.now());
   const [minimizedWindows, setMinimizedWindows] = useState({
     '/': false,
     '/skills': false,
@@ -23,6 +26,14 @@ function App() {
     '/education': false,
     '/projects': false
   });
+  
+  // Add state for help box
+  const [showHelpBox, setShowHelpBox] = useState(false);
+  
+  // Toggle help box function
+  const toggleHelpBox = () => {
+    setShowHelpBox(!showHelpBox);
+  };
   
   // Track open windows - initialize all as closed
   const [openWindows, setOpenWindows] = useState({
@@ -61,13 +72,34 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   
+  // Add a useEffect to log the loading state
+  useEffect(() => {
+    console.log("Current loading state:", isLoading);
+  }, [isLoading]);
+  
   // Handle loading complete
   const handleLoadingComplete = () => {
-    console.log("Loading complete");
-    setIsLoading(false);
+    console.log("Loading complete called");
     
-    // Navigate to desktop instead of home
-    navigate('/desktop', { replace: true });
+    // Ensure loading screen shows for at least 3 seconds
+    const currentTime = Date.now();
+    const timeElapsed = currentTime - loadingStartTime;
+    const minimumLoadingTime = 3000; // 3 seconds minimum
+    
+    if (timeElapsed < minimumLoadingTime) {
+      const remainingTime = minimumLoadingTime - timeElapsed;
+      console.log(`Waiting ${remainingTime}ms before completing loading`);
+      
+      setTimeout(() => {
+        console.log("Minimum loading time reached, completing loading");
+        setIsLoading(false);
+        navigate('/desktop', { replace: true });
+      }, remainingTime);
+    } else {
+      console.log("Minimum loading time already elapsed, completing loading immediately");
+      setIsLoading(false);
+      navigate('/desktop', { replace: true });
+    }
   };
   
   // Bring window to front
@@ -195,7 +227,7 @@ function App() {
     <div className="App">
       <TopMenuBar />
       <div className="main-content" style={{flex: 1, position: 'relative'}}>
-        {/* Background Grid - Always visible */}
+        {/* Background Grid - Set to lower opacity or remove if it interferes with the image */}
         <div className="grid-overlay" style={{
           position: 'absolute',
           top: 0,
@@ -204,9 +236,12 @@ function App() {
           bottom: 0,
           backgroundImage: 'linear-gradient(black 1px, transparent 1px), linear-gradient(90deg, black 1px, transparent 1px)',
           backgroundSize: '20px 20px',
-          opacity: 0.2,
+          opacity: 0.1, /* Reduced opacity to make background image more visible */
           zIndex: 1
         }}></div>
+        
+        {/* Desktop component with background image */}
+        <Desktop />
         
         {/* Render all windows regardless of current route */}
         <HomePage 
@@ -272,22 +307,58 @@ function App() {
         {/* Hidden Routes for navigation */}
         <div style={{ display: 'none' }}>
           <Routes>
-            <Route path="/desktop" element={<Desktop />} />
+            <Route path="/desktop" element={<div />} />
             <Route path="/" element={<div />} />
             <Route path="/skills" element={<div />} />
             <Route path="/proficiency" element={<div />} />
             <Route path="/experience" element={<div />} />
             <Route path="/education" element={<div />} />
             <Route path="/projects" element={<div />} />
-            {/* Add a catch-all route that redirects to desktop */}
-            <Route path="*" element={<div />} />
           </Routes>
         </div>
       </div>
+      
+      {/* Global Help Button */}
+      <button 
+        className="help-button"
+        onClick={toggleHelpBox}
+        aria-label="Help"
+      >
+        ?
+      </button>
+
+      {/* Global Help Box */}
+      {showHelpBox && (
+        <div className="help-box">
+          <div className="help-header">
+            <h2>Welcome to Portfolio OS</h2>
+            <button 
+              className="close-help-button"
+              onClick={toggleHelpBox}
+              aria-label="Close help"
+            >
+              ×
+            </button>
+          </div>
+          
+          <div className="help-content">
+            <section className="help-section">
+              <h3>Getting Started</h3>
+              <p>This portfolio is designed to mimic an operating system interface. Here's how to navigate:</p>
+              <ul>
+                <li><strong>Navigation Bar:</strong> Use the icons at the bottom of the screen to open different sections.</li>
+                <li><strong>Top Menu Bar:</strong> Access projects, resume, social links, and find settings</li>
+                <li><strong>Windows:</strong> Interact with windows by dragging, resizing, minimizing, or closing them.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      )}
+      
       <NavBar 
+        openWindows={openWindows}
         minimizedWindows={minimizedWindows}
         setMinimizedWindows={setMinimizedWindows}
-        openWindows={openWindows}
         handleOpenWindow={handleOpenWindow}
         windowZIndex={windowZIndex}
       />

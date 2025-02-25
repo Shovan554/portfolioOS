@@ -7,104 +7,215 @@ const WindowBox = ({
   isOpen = true, 
   setIsOpen, 
   onClose, 
-  zIndex = 10,
+  zIndex = 10, 
   onFocus,
-  initialPosition = null,
+  width = 800,
+  height = 600,
+  initialPosition,
   onPositionChange,
-  isLoading = false,
-  width = 1000,  // Default width
-  height = 700  // Default height
+  isLoading = false
 }) => {
-  console.log(`WindowBox ${title} rendering, isOpen:`, isOpen);
-  
   const [position, setPosition] = useState(initialPosition || { x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isMaximized, setIsMaximized] = useState(false);
+  const [animationState, setAnimationState] = useState(isOpen ? 'open' : 'minimized');
   const windowRef = useRef(null);
-  const prevPositionRef = useRef(position);
+  const navbarRef = useRef(null);
+  const lastValidPosition = useRef(position);
   const hasBeenCentered = useRef(false);
-  
+  // Add a flag to track if position change is from user dragging or programmatic
+  const isUserDragging = useRef(false);
+
+  // Find the navbar element to use as animation target
+  useEffect(() => {
+    navbarRef.current = document.querySelector('.navbar');
+  }, []);
+
   // Center window on first render or when initialPosition is null
   useEffect(() => {
     if (windowRef.current && (!hasBeenCentered.current || initialPosition === null)) {
-      const windowWidth = windowRef.current.offsetWidth;
-      const windowHeight = windowRef.current.offsetHeight;
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
       
       // Calculate center position
-      const centerX = Math.max(0, (viewportWidth - windowWidth) / 2);
-      const centerY = Math.max(0, (viewportHeight - windowHeight) / 4); // Slightly above center
+      const centerX = Math.max(0, (viewportWidth - width) / 2);
+      const centerY = Math.max(0, (viewportHeight - height) / 4); // Slightly above center
       
       // For loading page, always center it
       if (isLoading || title === "Loading" || initialPosition === null) {
         const newPosition = { x: centerX, y: centerY };
         setPosition(newPosition);
+        lastValidPosition.current = newPosition;
         if (onPositionChange) {
           onPositionChange(newPosition);
         }
         hasBeenCentered.current = true;
       }
     }
-  }, [isOpen, initialPosition, onPositionChange, isLoading, title]);
-  
+  }, [isOpen, initialPosition, onPositionChange, isLoading, title, width, height]);
+
+  // Handle animation states when isOpen changes
+  useEffect(() => {
+    // Skip animations if the user is currently dragging
+    if (isUserDragging.current) {
+      return;
+    }
+    
+    if (isOpen) {
+      // Calculate starting position near the navbar
+      const startPosition = getNavbarPosition();
+      
+      // Set initial position for animation
+      setPosition(startPosition);
+      
+      // Start opening animation
+      setAnimationState('opening');
+      
+      // After a small delay, set to open state
+      setTimeout(() => {
+        setAnimationState('open');
+        // Reset to proper position after animation
+        if (!isMaximized && initialPosition) {
+          setPosition(initialPosition);
+          lastValidPosition.current = initialPosition;
+        } else if (!isMaximized && !hasBeenCentered.current) {
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const centerPosition = { 
+            x: Math.max(0, (viewportWidth - width) / 2), 
+            y: Math.max(0, (viewportHeight - height) / 4)
+          };
+          setPosition(centerPosition);
+          lastValidPosition.current = centerPosition;
+          hasBeenCentered.current = true;
+        }
+      }, 300); // Delay to ensure animation completes
+    } else {
+      // Start minimizing animation
+      if (animationState === 'open') {
+        // Calculate end position near the navbar
+        const endPosition = getNavbarPosition();
+        
+        // Set position for animation
+        setPosition(endPosition);
+        
+        // Start minimizing animation
+        setAnimationState('minimizing');
+        
+        // After animation completes, set to minimized
+        setTimeout(() => {
+          setAnimationState('minimized');
+        }, 300);
+      }
+    }
+  }, [isOpen, initialPosition, isMaximized, width, height]);
+
+  // Get position near the navbar for animations
+  const getNavbarPosition = () => {
+    if (navbarRef.current) {
+      const navbarRect = navbarRef.current.getBoundingClientRect();
+      // Position near the center of the navbar
+      return {
+        x: navbarRect.left + navbarRect.width / 2 - 50,
+        y: navbarRect.top - 50
+      };
+    }
+    // Fallback position
+    return { x: window.innerWidth / 2, y: window.innerHeight - 50 };
+  };
+
+  // Update parent component when position changes
+  useEffect(() => {
+    if (onPositionChange && !isDragging && animationState === 'open') {
+      onPositionChange(position);
+    }
+  }, [position, isDragging, animationState, onPositionChange]);
+
   // Update position when initialPosition changes and is not null
   useEffect(() => {
-    if (!isMaximized && initialPosition !== null) {
-      setPosition(initialPosition);
+    // Skip if user is currently dragging
+    if (isUserDragging.current) {
+      return;
     }
-  }, [initialPosition, isMaximized]);
-  
-  // Handle dragging
+    
+    if (!isMaximized && initialPosition !== null && animationState === 'open') {
+      setPosition(initialPosition);
+      lastValidPosition.current = initialPosition;
+    }
+  }, [initialPosition, isMaximized, animationState]);
+
   const handleMouseDown = (e) => {
+    // Prevent dragging when clicking on window controls
+    if (e.target.closest('.window-controls')) {
+      return;
+    }
+    
     if (onFocus) onFocus();
     
-    if (e.target.closest('.window-title-bar') && !e.target.closest('.window-controls')) {
-      if (!isMaximized) {
-        setIsDragging(true);
-        const rect = windowRef.current.getBoundingClientRect();
-        setDragOffset({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top
-        });
-      }
+    // Only allow dragging when window is fully open
+    if (animationState !== 'open' || isMaximized) {
+      return;
+    }
+    
+    if (e.target.closest('.window-title-bar')) {
+      setIsDragging(true);
+      isUserDragging.current = true; // Set the user dragging flag
+      const rect = windowRef.current.getBoundingClientRect();
+      
+      // Store the drag offset - where in the title bar the user clicked
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      
+      // Add dragging class immediately to prevent transition animations
+      document.body.classList.add('dragging');
+      
+      // Prevent text selection during drag
       e.preventDefault();
     }
   };
-  
+
   const handleMouseMove = (e) => {
     if (isDragging) {
       const newX = e.clientX - dragOffset.x;
       const newY = e.clientY - dragOffset.y;
       
       // Ensure window stays within viewport
+      const maxX = window.innerWidth - width;
+      const maxY = window.innerHeight - 50; // Allow some overflow at bottom
+      
       const newPosition = {
-        x: Math.max(0, newX),
-        y: Math.max(0, newY)
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY))
       };
       
+      // Update position
       setPosition(newPosition);
-      prevPositionRef.current = newPosition;
+      lastValidPosition.current = newPosition;
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      document.body.classList.remove('dragging');
       
       if (onPositionChange) {
-        onPositionChange(newPosition);
+        onPositionChange(position);
       }
+      
+      // Reset the user dragging flag after a short delay
+      // This ensures any position updates that happen immediately after
+      // don't trigger animations
+      setTimeout(() => {
+        isUserDragging.current = false;
+      }, 100);
     }
   };
-  
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-  
-  const handleMaximize = () => {
-    setIsMaximized(!isMaximized);
-    if (isMaximized && onPositionChange) {
-      // Restore previous position
-      onPositionChange(prevPositionRef.current);
-    }
-  };
-  
+
+  // Add and remove event listeners for drag
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
@@ -112,61 +223,72 @@ const WindowBox = ({
     } else {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.body.classList.remove('dragging');
     }
     
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.body.classList.remove('dragging');
     };
-  }, [isDragging, dragOffset, onPositionChange]);
-  
-  if (!isOpen) {
+  }, [isDragging, position]);
+
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
+
+  const handleMinimize = () => {
+    if (setIsOpen) setIsOpen(false);
+  };
+
+  const handleMaximize = () => {
+    setIsMaximized(!isMaximized);
+    if (!isMaximized) {
+      // Save current position before maximizing
+      lastValidPosition.current = { ...position };
+    } else {
+      // Restore position after un-maximizing
+      setPosition(lastValidPosition.current);
+      if (onPositionChange) {
+        onPositionChange(lastValidPosition.current);
+      }
+    }
+  };
+
+  // Don't render if minimized and animation completed
+  if (animationState === 'minimized' && !isOpen) {
     return null;
   }
-  
+
   return (
-    <div 
+    <div
       ref={windowRef}
-      className={`window-box ${isMaximized ? 'maximized' : ''}`} 
+      className={`window-box ${isMaximized ? 'maximized' : ''} ${animationState} ${isDragging ? 'dragging' : ''}`}
       style={{
-        left: isMaximized ? 0 : `${position.x}px`,
-        top: isMaximized ? 30 : `${position.y}px`,
+        width: isMaximized ? '100%' : width,
+        height: isMaximized ? 'calc(100vh - 60px)' : height,
+        left: isMaximized ? 0 : position.x,
+        top: isMaximized ? 30 : position.y,
         zIndex: zIndex,
-        width: isMaximized ? '100%' : `${width}px`,
-        height: isMaximized ? 'calc(100vh - 60px)' : `${height}px`
+        cursor: isDragging ? 'grabbing' : 'default'
       }}
-      onMouseDown={handleMouseDown}
       onClick={onFocus}
     >
-      <div className="window-title-bar">
+      <div 
+        className="window-title-bar"
+        onMouseDown={handleMouseDown}
+        style={{ cursor: isMaximized ? 'default' : 'move' }}
+      >
         <div className="window-title">{title}</div>
         <div className="window-controls">
-          <button 
-            className="window-control minimize"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsOpen(false);
-            }}
-          >
-            −
+          <button className="window-button minimize" onClick={handleMinimize}>
+            <span>_</span>
           </button>
-          <button 
-            className="window-control maximize"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleMaximize();
-            }}
-          >
-            □
+          <button className="window-button maximize" onClick={handleMaximize}>
+            <span>□</span>
           </button>
-          <button 
-            className="window-control close"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onClose) onClose();
-            }}
-          >
-            ×
+          <button className="window-button close" onClick={handleClose}>
+            <span>×</span>
           </button>
         </div>
       </div>

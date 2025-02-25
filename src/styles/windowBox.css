@@ -8,7 +8,50 @@
   flex-direction: column;
   z-index: 10;
   border: 1px solid #ccc;
+  /* Add transition for smooth animations, but not for position */
+  transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center center;
   /* Remove width: 80% and max-width: 800px to use the fixed width from props */
+  will-change: transform, left, top; /* Optimize for animations */
+}
+
+/* Add animation classes */
+.window-box.opening {
+  transform: scale(0.1);
+  opacity: 0;
+  /* Position will be set dynamically in JS */
+}
+
+.window-box.open {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.window-box.minimizing {
+  transform: scale(0.1);
+  opacity: 0;
+  /* Position will be set dynamically in JS */
+}
+
+.window-box.minimized {
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Disable ALL transitions during dragging to prevent lag */
+.window-box.dragging {
+  transition: none !important;
+  user-select: none !important;
+}
+
+/* Also disable transitions on all children during dragging */
+.window-box.dragging * {
+  transition: none !important;
+  user-select: none !important;
 }
 
 .window-title-bar {
@@ -22,10 +65,24 @@
   user-select: none;
   height: 30px;
   flex-shrink: 0; /* Prevent title bar from shrinking */
+  touch-action: none; /* Prevent scrolling on mobile */
+}
+
+/* Add a global style to prevent text selection during dragging */
+body.dragging {
+  cursor: grabbing !important;
+  user-select: none !important;
+  overflow: hidden; /* Prevent scrolling while dragging */
+}
+
+/* Ensure all elements can't be selected during dragging */
+body.dragging * {
+  user-select: none !important;
 }
 
 .window-title {
   font-weight: bold;
+  pointer-events: none; /* Prevent text selection */
 }
 
 .window-controls {

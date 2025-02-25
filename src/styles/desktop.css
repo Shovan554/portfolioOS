@@ -4,5 +4,194 @@
   position: absolute;
   top: 0;
   left: 0;
-  /* The desktop is transparent to show the grid background */
+  bottom: 0;
+  right: 0;
+  /* The background image is now set inline in the component */
+  z-index: 1; /* Ensure it's above the grid but below windows */
+}
+
+/* Help Button Styles */
+.help-button {
+  position: fixed;
+  bottom: 60px; /* Position above the navbar */
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #E5D9F2; /* Match navbar color */
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  border: 2px solid #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Increased z-index to be above all other elements */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.help-button:hover {
+  background-color: #000;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Help Box Styles */
+.help-box {
+  position: fixed;
+  bottom: 110px; /* Position above the help button */
+  right: 20px;
+  width: 400px;
+  max-height: 70vh;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+  z-index: 10000; /* Even higher z-index than the help button */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Help Header Styles */
+.help-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #E5D9F2; /* Match navbar color */
+  border-bottom: 2px solid #000;
+}
+
+.help-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #000;
+}
+
+.close-help-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-help-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Help Content Styles */
+.help-content {
+  padding: 15px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.help-section {
+  margin-bottom: 20px;
+}
+
+.help-section h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #000;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.help-section p {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.help-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.help-section li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.help-section strong {
+  color: #000;
+}
+
+/* Dark Mode Styles */
+body.dark-mode .help-button {
+  background-color: rgba(30, 30, 30, 0.95);
+  color: #fff;
+  border-color: #444;
+}
+
+body.dark-mode .help-button:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+body.dark-mode .help-box {
+  background-color: #222;
+  border-color: #444;
+}
+
+body.dark-mode .help-header {
+  background-color: rgba(30, 30, 30, 0.95);
+  border-color: #444;
+}
+
+body.dark-mode .help-header h2 {
+  color: #fff;
+}
+
+body.dark-mode .close-help-button {
+  color: #fff;
+}
+
+body.dark-mode .close-help-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .help-section h3 {
+  color: #fff;
+  border-color: #444;
+}
+
+body.dark-mode .help-section p,
+body.dark-mode .help-section li {
+  color: #ccc;
+}
+
+body.dark-mode .help-section strong {
+  color: #fff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .help-box {
+    width: 90%;
+    max-width: 400px;
+    right: 5%;
+    left: 5%;
+    margin: 0 auto;
+  }
+  
+  .help-button {
+    right: 10px;
+  }
 }

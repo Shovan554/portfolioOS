@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(1, 167, 168, 0.95);
+  background: #E5D9F2; /* Light lavender/purple background */
   border-bottom: 2px solid #000;
   height: 40px;
   z-index: 1000;
@@ -20,7 +20,7 @@
 
 .left-menu {
   display: flex;
-  gap: 5px;  /* 2px gap between menu items */
+  gap: 5px;  /* 5px gap between menu items */
   padding: 0;
   margin: 0;
   height: 100%;
@@ -28,9 +28,9 @@
 }
 
 .menu-item {
-  color: #fff;
+  color: #000; /* Black text */
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem; /* Increased from 0.9rem */
+  font-size: 1rem;
   cursor: pointer;
   padding: 0 6px;
   text-transform: uppercase;
@@ -39,6 +39,7 @@
   align-items: center;
   transition: all 0.3s ease;
   text-decoration: none;
+  font-weight: 600; /* Make text slightly bolder for better contrast */
 }
 
 .menu-item:first-child {
@@ -46,8 +47,8 @@
 }
 
 .menu-item:hover {
-  color: rgb(183, 255, 0);
-  background-color: rgba(0, 0, 0, 0.2);
+  color: #000; /* Keep black text on hover */
+  background-color: rgba(255, 255, 255, 0.5); /* Lighter background on hover */
 }
 
 .menu-item-dropdown {
@@ -61,7 +62,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: rgba(1, 167, 168, 0.95);
+  background: #E5D9F2; /* Light lavender/purple background for dropdown */
   border: 1px solid #000;
   border-top: none;
   min-width: 180px;
@@ -71,18 +72,19 @@
 }
 
 .dropdown-item {
-  color: #fff;
+  color: #000; /* Black text */
   text-decoration: none;
   padding: 8px 12px;
   display: block;
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem; /* Increased from 0.9rem */
+  font-size: 1rem;
   text-transform: uppercase;
+  font-weight: 600; /* Make text slightly bolder for better contrast */
 }
 
 .dropdown-item:hover {
-  color: rgb(183, 255, 0);
-  background-color: rgba(0, 0, 0, 0.2);
+  color: #000; /* Keep black text on hover */
+  background-color: rgba(255, 255, 255, 0.5); /* Lighter background on hover */
 }
 
 .settings-item {
@@ -130,7 +132,7 @@
 }
 
 input:checked + .toggle-slider {
-  background-color: rgb(183, 255, 0);
+  background-color: #000; /* Black background when toggled */
 }
 
 input:checked + .toggle-slider:before {
@@ -141,25 +143,27 @@ input:checked + .toggle-slider:before {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: #fff;
+  color: #000; /* Black text */
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem; /* Increased from 0.9rem */
+  font-size: 1rem;
+  font-weight: 600; /* Make text slightly bolder for better contrast */
 }
 
 .datetime {
-  color: rgb(183, 255, 0);
+  color: #000; /* Black text for datetime */
 }
 
 .right-menu {
-  color: #fff;
+  color: #000; /* Black text */
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem; /* Increased from 0.9rem */
+  font-size: 1rem;
   padding: 0 10px;
   margin: 0;
   height: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
+  font-weight: 600; /* Make text slightly bolder for better contrast */
 }
 
 /* Profile styling */
@@ -171,32 +175,33 @@ input:checked + .toggle-slider:before {
 }
 
 .user-name {
-  color: rgb(183, 255, 0);
+  color: #000; /* Black text for username */
   padding-right: 0;
   height: 100%;
   display: flex;
   align-items: center;
-  font-size: 1.05rem; /* Increased from default */
+  font-size: 1.05rem;
+  font-weight: 700; /* Make username bolder */
 }
 
 .profile-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
-  background: rgba(1, 167, 168, 0.95);
+  background: #E5D9F2; /* Light lavender/purple background for dropdown */
   border: 1px solid #000;
   border-top: none;
   width: 250px;
   z-index: 1001;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 0;
-  color: #fff;
+  color: #000; /* Black text */
 }
 
 .profile-header {
   display: flex;
   padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* Darker border */
   align-items: center;
 }
 
@@ -205,7 +210,7 @@ input:checked + .toggle-slider:before {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgb(183, 255, 0);
+  border: 2px solid #000; /* Black border for profile pic */
 }
 
 .profile-info {
@@ -222,17 +227,18 @@ input:checked + .toggle-slider:before {
 }
 
 .profile-name-link:hover {
-  color: rgb(183, 255, 0);
+  color: #000; /* Keep black text on hover */
+  text-decoration: underline; /* Add underline on hover instead of color change */
   cursor: pointer;
 }
 
 .profile-name {
   font-weight: bold;
-  font-size: 1rem; /* Increased from 0.9rem */
+  font-size: 1rem;
 }
 
 .profile-username {
-  font-size: 0.9rem; /* Increased from 0.8rem */
+  font-size: 0.9rem;
   opacity: 0.8;
 }
 
@@ -268,8 +274,8 @@ input:checked + .toggle-slider:before {
 .profile-action-btn {
   flex: 1;
   background: transparent;
-  border: 1px solid rgb(183, 255, 0);
-  color: rgb(183, 255, 0);
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
   padding: 6px 0;
   cursor: pointer;
   font-size: 0.9rem; /* Increased from 0.8rem */
@@ -316,14 +322,14 @@ body.dark-mode .profile-dropdown {
 .status-icon {
   width: 18px;
   height: 18px;
-  filter: brightness(0) invert(1); /* Makes the icon white */
+  filter: brightness(0); /* Makes the icon black */
 }
 
 .status-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
-  background: rgba(1, 167, 168, 0.95);
+  background: #E5D9F2; /* Light lavender/purple background for dropdown */
   border: 1px solid #000;
   border-top: none;
   min-width: 180px;
@@ -336,7 +342,7 @@ body.dark-mode .profile-dropdown {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  color: #fff;
+  color: #000; /* Black text */
 }
 
 /* Battery specific styling */
@@ -382,15 +388,54 @@ body.dark-mode .navbar {
 }
 
 body.dark-mode .top-menubar {
-  background: rgba(30, 30, 30, 0.95);
+  background: rgba(30, 30, 30, 0.95); /* Black background in dark mode */
 }
 
-body.dark-mode .dropdown-menu {
-  background: rgba(30, 30, 30, 0.95);
+body.dark-mode .menu-item,
+body.dark-mode .dropdown-item,
+body.dark-mode .center-menu,
+body.dark-mode .datetime,
+body.dark-mode .right-menu,
+body.dark-mode .user-name,
+body.dark-mode .profile-dropdown,
+body.dark-mode .status-dropdown,
+body.dark-mode .status-info,
+body.dark-mode .profile-name,
+body.dark-mode .profile-username {
+  color: #f0f0f0; /* White text in dark mode */
 }
 
+body.dark-mode .dropdown-menu,
+body.dark-mode .profile-dropdown,
 body.dark-mode .status-dropdown {
-  background: rgba(30, 30, 30, 0.95);
+  background: rgba(30, 30, 30, 0.95); /* Black background for dropdowns in dark mode */
+  border-color: #444;
+}
+
+body.dark-mode .profile-pic {
+  border-color: #f0f0f0; /* White border for profile pic in dark mode */
+}
+
+body.dark-mode .status-icon {
+  filter: brightness(0) invert(1); /* Makes the icon white in dark mode */
+}
+
+body.dark-mode .profile-name-link:hover {
+  color: #f0f0f0; /* Keep white text on hover in dark mode */
+}
+
+body.dark-mode .menu-item:hover,
+body.dark-mode .dropdown-item:hover {
+  color: #f0f0f0; /* Keep white text on hover in dark mode */
+  background-color: rgba(255, 255, 255, 0.1); /* Darker background on hover in dark mode */
+}
+
+body.dark-mode input:checked + .toggle-slider {
+  background-color: #61dafb; /* Light blue background when toggled in dark mode */
+}
+
+body.dark-mode .profile-header {
+  border-bottom-color: rgba(255, 255, 255, 0.2); /* Lighter border in dark mode */
 }
 
 @media (max-width: 768px) {

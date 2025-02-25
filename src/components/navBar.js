@@ -17,55 +17,43 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
     let topPath = '';
     let highestZ = -1;
     
-    Object.keys(windowZIndex).forEach(path => {
-      if (openWindows[path] && !minimizedWindows[path] && windowZIndex[path] > highestZ) {
-        highestZ = windowZIndex[path];
-        topPath = path;
-      }
-    });
+    // Check if windowZIndex is defined before using Object.keys
+    if (windowZIndex && typeof windowZIndex === 'object') {
+      Object.keys(windowZIndex).forEach(path => {
+        if (openWindows && openWindows[path] && 
+            minimizedWindows && !minimizedWindows[path] && 
+            windowZIndex[path] > highestZ) {
+          highestZ = windowZIndex[path];
+          topPath = path;
+        }
+      });
+    }
     
     return topPath;
   };
   
   const topWindowPath = getTopWindowPath();
 
-  const navItems = [
-    {
-      name: 'Home',
-      icon: homeIcon,
-      path: '/'
-    },
-    {
-      name: 'Skills',
-      icon: skillsIcon,
-      path: '/skills'
-    },
-    {
-      name: 'Proficiency',
-      icon: proficiencyIcon,
-      path: '/proficiency'
-    },
-    {
-      name: 'Experience',
-      icon: experienceIcon,
-      path: '/experience'
-    },
-    {
-      name: 'Education',
-      icon: educationIcon,
-      path: '/education'
-    },
-   
-  ];
-
+  // Add null checks for all props
   const handleNavClick = (path) => {
     // If window is open but minimized, restore it
-    if (openWindows[path] && minimizedWindows[path]) {
+    if (openWindows && minimizedWindows && openWindows[path] && minimizedWindows[path]) {
       setMinimizedWindows({...minimizedWindows, [path]: false});
     }
     // Otherwise use the handleOpenWindow function
-    handleOpenWindow(path);
+    if (handleOpenWindow) {
+      handleOpenWindow(path);
+    }
   };
+
+  // Define navItems with proper null checks
+  const navItems = [
+    { name: 'Home', path: '/', icon: homeIcon },
+    { name: 'Skills', path: '/skills', icon: skillsIcon },
+    { name: 'Proficiency', path: '/proficiency', icon: proficiencyIcon },
+    { name: 'Experience', path: '/experience', icon: experienceIcon },
+    { name: 'Education', path: '/education', icon: educationIcon }
+  ];
 
   return (
     <nav className="navbar">
@@ -73,7 +61,7 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
         {/* Home button positioned on the left */}
         <button
           key="Home"
-          className={`nav-item home-button ${topWindowPath === '/' ? 'active' : ''} ${openWindows['/'] && minimizedWindows['/'] ? 'minimized' : ''}`}
+          className={`nav-item home-button ${topWindowPath === '/' ? 'active' : ''} ${openWindows && minimizedWindows && openWindows['/'] && minimizedWindows['/'] ? 'minimized' : ''}`}
           onClick={() => handleNavClick('/')}
         >
           <img 
@@ -88,7 +76,7 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
         {navItems.slice(1).map((item) => (
           <button
             key={item.name}
-            className={`nav-item ${topWindowPath === item.path ? 'active' : ''} ${openWindows[item.path] && minimizedWindows[item.path] ? 'minimized' : ''}`}
+            className={`nav-item ${topWindowPath === item.path ? 'active' : ''} ${openWindows && minimizedWindows && openWindows[item.path] && minimizedWindows[item.path] ? 'minimized' : ''}`}
             onClick={() => handleNavClick(item.path)}
           >
             <img 

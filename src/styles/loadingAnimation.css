@@ -1,41 +1,69 @@
 
 .loading-animation-container {
-  width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
 }
 
 .loading-title {
-  font-size: 5rem;
-  font-weight: bold;
-  color: rgb(0, 0, 0);
-  margin: 0;
-  padding: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  line-height: 1;
-  margin-bottom: -50px;
-  z-index: 1;
+  margin-top:200px;
+  font-size: 2.5rem;
+  color: #243A62;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0; /* Remove bottom margin to eliminate gap */
+  padding-bottom: 0; /* Remove any padding that might create space */
+  line-height: 1.2; /* Adjust line height to reduce space */
+}
+
+.animation {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 0; /* Remove top padding to eliminate gap */
+  margin-top: -20px; /* Add negative margin to pull animation up */
+}
+
+.completion-message {
+  margin-top: 20px;
+  text-align: center;
 }
 
 .continue-text {
-  position: absolute;
-  bottom: 0px;
-  font-size: 2rem;
-  color: rgb(183, 255, 0);
+  font-size: 1.2rem;
+  color: #243A62;
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-  z-index:2;
+  transition: opacity 0.5s ease-in-out;
+  animation: pulse 1.5s infinite;
+  margin-top:-200px;
 }
 
 .continue-text.show {
   opacity: 1;
-  transform: translateY(0);
 }
-.animation{
-  margin-top:-0px;
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* Dark mode adjustments */
+body.dark-mode .loading-title {
+  color: #fff;
+}
+
+body.dark-mode .continue-text {
+  color: #fff;
 }

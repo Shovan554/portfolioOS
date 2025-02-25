@@ -5,9 +5,10 @@ import "../styles/loadingAnimation.css";
 
 const LoadingAnimation = ({ onComplete }) => {
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+  const [waitingForKeyPress, setWaitingForKeyPress] = useState(false);
   
   // Add console logs for debugging
-  console.log("LoadingAnimation rendering, isComplete:", isAnimationComplete);
+  console.log("LoadingAnimation rendering, isComplete:", isAnimationComplete, "waitingForKeyPress:", waitingForKeyPress);
 
   useEffect(() => {
     console.log("LoadingAnimation mounted");
@@ -16,23 +17,41 @@ const LoadingAnimation = ({ onComplete }) => {
     const timer = setTimeout(() => {
       console.log("Forcing animation complete");
       setIsAnimationComplete(true);
-      onComplete(); // Call onComplete directly
+      setWaitingForKeyPress(true);
     }, 5000);
     
     const handleKeyPress = (event) => {
       console.log("Key pressed:", event.key);
-      if (isAnimationComplete || event.key === "Enter") {
-        console.log("Completing animation due to key press");
+      if (waitingForKeyPress) {
+        console.log("Completing loading due to key press");
+        onComplete();
+      }
+    };
+
+    const handleClick = () => {
+      console.log("Mouse clicked");
+      if (waitingForKeyPress) {
+        console.log("Completing loading due to mouse click");
         onComplete();
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener('click', handleClick);
+    
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('click', handleClick);
       clearTimeout(timer);
     };
-  }, [isAnimationComplete, onComplete]);
+  }, [waitingForKeyPress, onComplete]);
+
+  // Handle animation completion
+  const handleAnimationComplete = () => {
+    console.log("Lottie animation completed");
+    setIsAnimationComplete(true);
+    setWaitingForKeyPress(true);
+  };
 
   return (
     <div className="loading-animation-container">
@@ -42,16 +61,12 @@ const LoadingAnimation = ({ onComplete }) => {
           animationData={loadingAnimation} 
           loop={false}
           style={{ width: 600, height: 600 }}
-          onComplete={() => {
-            console.log("Lottie animation completed");
-            setIsAnimationComplete(true);
-            onComplete(); // Call onComplete directly
-          }}
+          onComplete={handleAnimationComplete}
         />
       </div>
       {isAnimationComplete && (
         <div className="completion-message">
-          <p>Loading complete. Press any key to continue.</p>
+          <p className="continue-text show">Press any key or click anywhere to continue</p>
         </div>
       )}
     </div>

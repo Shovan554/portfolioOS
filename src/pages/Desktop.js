@@ -1,11 +1,16 @@
 import React from 'react';
 import '../styles/desktop.css';
+import backgroundImage from '../assets/images/windows.jpg'; // Import the background image
 
 const Desktop = () => {
   return (
-    <div className="desktop">
-      {/* Desktop is just an empty container that shows the background */}
-      {/* You can add desktop icons or other elements here later */}
+    <div className="desktop" style={{
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
+    }}>
+      {/* Desktop content goes here */}
     </div>
   );
 };
