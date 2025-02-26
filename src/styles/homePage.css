@@ -283,6 +283,54 @@ body.dark-mode .grid-overlay {
   color: #b7ff00;
 }
 
+/* Dark mode text color overrides */
+body.dark-mode .profile-name,
+body.dark-mode .profile-tagline,
+body.dark-mode .contact-item,
+body.dark-mode .highlight-card h4,
+body.dark-mode .highlight-description,
+body.dark-mode .skill-category h4,
+body.dark-mode .cta-section p,
+body.dark-mode .section-title {
+  color: #ffffff;
+}
+
+body.dark-mode .contact-item a {
+  color: #61dafb;
+}
+
+body.dark-mode .contact-item a:hover {
+  color: #b7ff00;
+}
+
+body.dark-mode .highlight-card {
+  background-color: rgba(30, 30, 30, 0.2);
+}
+
+body.dark-mode .cta-section {
+  background-color: rgba(30, 30, 30, 0.2);
+}
+
+body.dark-mode .skill-tag {
+  background-color: rgba(97, 218, 251, 0.2);
+  color: #61dafb;
+}
+
+body.dark-mode .skill-tag:hover {
+  background-color: rgba(97, 218, 251, 0.3);
+}
+
+body.dark-mode .cta-button {
+  background-color: #61dafb;
+  color: #1E3D4A;
+  border: 2px solid #61dafb;
+}
+
+body.dark-mode .cta-button:hover {
+  background-color: transparent;
+  color: #61dafb;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .profile-section {

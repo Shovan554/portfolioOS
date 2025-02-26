@@ -19,15 +19,15 @@ const ExperiencePage = ({
   const experienceData = [
     {
       company: "CogAI",
-      position: "Research Assistant",
-      period: "Sep 2023 - Present",
+      position: "Research Assistant (Part time)",
+      period: "Sep 2023 - Current",
       description: "Designed and implemented experiments to evaluate the impact of backpropagation on CNN performance. Worked on a device enhancing mobility and environmental awareness for visually impaired individuals."
     },
     {
-      company: "Caldwell Robotics",
-      position: "Technical Lead",
-      period: "Feb 2024 - Present",
-      description: "Leading the technical team in the development of robotic solutions, focusing on innovation and practical applications."
+      company: "STEM Advance Project",
+      position: "Summer Researcher",
+      period: "May 2024 - August 2024",
+      description: "Conducted research as part of the STEM Advance Project at Caldwell, New Jersey, focusing on innovative solutions and technological advancements."
     },
     {
       company: "South Dakota Science Olympiad",
@@ -40,12 +40,6 @@ const ExperiencePage = ({
       position: "Junior Developer",
       period: "Jan 2022 - Jul 2022",
       description: "Automated data import to a database built in Visual Basic. Developed a SaaS framework for managing, generating, and reporting commissions for dealers authorized by Ncell Pvt Ltd."
-    },
-    {
-      company: "Silver Lining Pvt. Ltd.",
-      position: "Intern",
-      period: "Apr 2019 - Jun 2019",
-      description: "Built a help page for the SaaS framework using HTML and Bootstrap."
     }
   ];
   

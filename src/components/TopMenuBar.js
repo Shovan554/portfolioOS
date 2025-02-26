@@ -11,6 +11,7 @@ import profilePic from '../assets/images/pp.PNG';
 import sunnyIcon from '../assets/icons/sunny.png';
 import cloudyIcon from '../assets/icons/cloudy.png';
 import rainyIcon from '../assets/icons/rainy.png';
+import ShutdownScreen from './ShutdownScreen';
 
 const TopMenuBar = () => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -42,6 +43,7 @@ const TopMenuBar = () => {
   const [weatherError, setWeatherError] = useState(null);
   const [locationPermission, setLocationPermission] = useState('prompt'); // 'prompt', 'granted', 'denied'
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+  const [isShuttingDown, setIsShuttingDown] = useState(false);
 
   const handleLocationPermission = (granted) => {
     setShowLocationPrompt(false);
@@ -211,8 +213,18 @@ const TopMenuBar = () => {
     return sunnyIcon; // Default to sunny for clear, sun, etc.
   };
 
-  // Handle Sign Out - refreshes the page
   const handleSignOut = () => {
+    // First, close all open windows using the global function
+    if (window.closeAllWindows) {
+      window.closeAllWindows();
+    }
+    
+    // Then, set shutting down state to true to show the shutdown screen
+    setIsShuttingDown(true);
+  };
+
+  const handleShutdownComplete = () => {
+    console.log("Shutdown complete, refreshing page");
     window.location.reload();
   };
 
@@ -431,6 +443,7 @@ const TopMenuBar = () => {
                     <span className="toggle-slider"></span>
                   </label>
                 </div>
+              
               </div>
             )}
           </div>
@@ -597,7 +610,7 @@ const TopMenuBar = () => {
                     className="profile-action-btn"
                     onClick={handleSignOut}
                   >
-                    Refresh
+                    Shutdown
                   </button>
                 </div>
               </div>
@@ -605,6 +618,7 @@ const TopMenuBar = () => {
           </div>
         </div>
       </div>
+      {isShuttingDown && <ShutdownScreen onComplete={handleShutdownComplete} />}
     </div>
   );
 };

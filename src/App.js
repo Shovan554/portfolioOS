@@ -18,6 +18,9 @@ import './styles/desktop.css'; // Import the desktop styles for help button and 
 import MobileWarning from './components/MobileWarning';
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   // Force isLoading to true on initial render
   const [isLoading, setIsLoading] = useState(true);
   const [loadingStartTime] = useState(Date.now());
@@ -32,15 +35,7 @@ function App() {
     '/terminal': false
   });
   
-  // Add state for help box
-  const [showHelpBox, setShowHelpBox] = useState(false);
-  
-  // Toggle help box function
-  const toggleHelpBox = () => {
-    setShowHelpBox(!showHelpBox);
-  };
-  
-  // Track open windows - initialize all as closed
+  // Add state for window management
   const [openWindows, setOpenWindows] = useState({
     '/': false,
     '/skills': false,
@@ -52,222 +47,84 @@ function App() {
     '/terminal': false
   });
   
-  // Track z-index for each window
   const [windowZIndex, setWindowZIndex] = useState({
-    '/': 10,
-    '/skills': 11,
-    '/proficiency': 12,
-    '/experience': 13,
-    '/education': 14,
-    '/projects': 15,
-    '/flappydunk': 16,
-    '/terminal': 17
+    '/': 1,
+    '/skills': 1,
+    '/proficiency': 1,
+    '/experience': 1,
+    '/education': 1,
+    '/projects': 1,
+    '/flappydunk': 1,
+    '/terminal': 1
   });
   
-  // Track window positions - initialize with centered positions
-  // We'll use null to indicate that the window should be centered on first open
   const [windowPositions, setWindowPositions] = useState({
-    '/': null,
-    '/skills': null,
-    '/proficiency': null,
-    '/experience': null,
-    '/education': null,
-    '/projects': null,
-    '/flappydunk': null,
-    '/terminal': null
+    '/': { x: 100, y: 100 },
+    '/skills': { x: 150, y: 150 },
+    '/proficiency': { x: 200, y: 200 },
+    '/experience': { x: 250, y: 250 },
+    '/education': { x: 300, y: 300 },
+    '/projects': { x: 350, y: 350 },
+    '/flappydunk': { x: 200, y: 100 }, // Updated position
+    '/terminal': { x: 250, y: 150 }    // Updated position
   });
   
-  // Current highest z-index
-  const [highestZIndex, setHighestZIndex] = useState(17);
+  // Add state for help box
+  const [showHelpBox, setShowHelpBox] = useState(false);
   
-  const location = useLocation();
-  const navigate = useNavigate();
-  
-  // Add a useEffect to log the loading state
-  useEffect(() => {
-    console.log("Current loading state:", isLoading);
-  }, [isLoading]);
-  
-  // Handle loading complete
-  const handleLoadingComplete = () => {
-    console.log("Loading complete called");
-    
-    // Ensure loading screen shows for at least 3 seconds
-    const currentTime = Date.now();
-    const timeElapsed = currentTime - loadingStartTime;
-    const minimumLoadingTime = 3000; // 3 seconds minimum
-    
-    if (timeElapsed < minimumLoadingTime) {
-      const remainingTime = minimumLoadingTime - timeElapsed;
-      console.log(`Waiting ${remainingTime}ms before completing loading`);
-      
-      setTimeout(() => {
-        console.log("Minimum loading time reached, completing loading");
-        setIsLoading(false);
-        navigate('/desktop', { replace: true });
-      }, remainingTime);
-    } else {
-      console.log("Minimum loading time already elapsed, completing loading immediately");
-      setIsLoading(false);
-      navigate('/desktop', { replace: true });
-    }
+  // Toggle help box function
+  const toggleHelpBox = () => {
+    setShowHelpBox(!showHelpBox);
   };
   
-  // Bring window to front
-  const bringWindowToFront = (path) => {
-    console.log(`Bringing window to front: ${path}`);
-    const newZIndex = highestZIndex + 1;
-    setWindowZIndex({...windowZIndex, [path]: newZIndex});
-    setHighestZIndex(newZIndex);
-  };
-  
-  // Handle window closing
-  const handleCloseWindow = (path) => {
-    console.log(`Closing window: ${path}`);
-    setOpenWindows({...openWindows, [path]: false});
-    
-    // Find another open window to navigate to, excluding home page
-    const openPaths = Object.keys(openWindows)
-      .filter(p => p !== path && p !== '/' && openWindows[p] && !minimizedWindows[p]);
-    
-    console.log("Open paths after closing (excluding home):", openPaths);
-    
-    if (openPaths.length > 0) {
-      console.log("Navigating to another open window:", openPaths[0]);
-      navigate(openPaths[0], { replace: true });
-    } else {
-      console.log("No open windows left, navigating to desktop");
-      // Navigate to desktop to show just the background
-      navigate('/desktop', { replace: true });
-    }
-  };
-  
-  // Add a debounce ref to prevent multiple window opens
-  const isNavigating = useRef(false);
-  const navigationTimeout = useRef(null);
-  
-  // Handle window opening with debouncing
-  const handleOpenWindow = (path) => {
-    console.log(`Opening window: ${path}`);
-    
-    // If already navigating, cancel
-    if (isNavigating.current) {
-      console.log("Navigation already in progress, ignoring request");
-      return;
-    }
-    
-    // Set navigating flag
-    isNavigating.current = true;
-    
-    // If window is not open, open it
-    if (!openWindows[path]) {
-      setOpenWindows(prev => {
-        console.log("Current openWindows state:", prev);
-        console.log("Setting", path, "to true");
-        return {...prev, [path]: true};
-      });
-      setMinimizedWindows({...minimizedWindows, [path]: false});
-      bringWindowToFront(path);
-    }
-    
-    // Update URL without triggering the useEffect
-    if (location.pathname !== path) {
-      navigate(path, { replace: true });
-    }
-    
-    // Clear navigation flag after a short delay
-    if (navigationTimeout.current) {
-      clearTimeout(navigationTimeout.current);
-    }
-    
-    navigationTimeout.current = setTimeout(() => {
-      isNavigating.current = false;
-    }, 500); // Prevent new navigation for 500ms
-  };
-  
-  // Bring window to front when navigating to it
-  useEffect(() => {
-    if (!isLoading) {
-      const path = location.pathname;
-      console.log(`Navigation effect triggered for path: ${path}`);
-      console.log("Current openWindows state:", openWindows);
-      
-      // Skip for desktop path
-      if (path === '/desktop') {
-        return;
-      }
-      
-      // Skip if already navigating
-      if (isNavigating.current) {
-        console.log("Navigation already in progress, skipping effect");
-        return;
-      }
-      
-      // Set navigating flag
-      isNavigating.current = true;
-      
-      // Only open the window if it's not already open AND the path is not empty
-      if (path && path !== '' && !openWindows[path]) {
-        console.log(`Opening window from navigation effect: ${path}`);
-        setOpenWindows(prev => ({...prev, [path]: true}));
-      }
-      
-      // Always unminimize the window when navigating to it, but only if it exists
-      if (path && minimizedWindows[path]) {
-        setMinimizedWindows({...minimizedWindows, [path]: false});
-      }
-      
-      // Only bring window to front if it's a valid path
-      if (path && windowZIndex[path]) {
-        bringWindowToFront(path);
-      }
-      
-      // Clear navigation flag after a short delay
-      if (navigationTimeout.current) {
-        clearTimeout(navigationTimeout.current);
-      }
-      
-      navigationTimeout.current = setTimeout(() => {
-        isNavigating.current = false;
-      }, 500); // Prevent new navigation for 500ms
-    }
-  }, [location.pathname, isLoading]);
-  
-  // Function to handle window minimizing
-  const handleMinimizeWindow = (path) => {
-    console.log(`Minimizing window: ${path}`);
-    setMinimizedWindows({...minimizedWindows, [path]: true});
-  };
-  
-  // Function to handle window restoring
-  const handleRestoreWindow = (path) => {
-    console.log(`Restoring window: ${path}`);
-    setMinimizedWindows({...minimizedWindows, [path]: false});
-    bringWindowToFront(path);
-  };
-  
-  // Function to update window position
-  const updateWindowPosition = (path, position) => {
-    setWindowPositions({...windowPositions, [path]: position});
-  };
-
-  // Find the window with the highest z-index (the one on top)
-  const getTopWindowPath = () => {
-    let topPath = '';
-    let highestZ = -1;
-    
-    Object.keys(windowZIndex).forEach(path => {
-      if (openWindows[path] && !minimizedWindows[path] && windowZIndex[path] > highestZ) {
-        highestZ = windowZIndex[path];
-        topPath = path;
-      }
-    });
-    
-    return topPath;
-  };
-
   // Add state for mobile warning
   const [showMobileWarning, setShowMobileWarning] = useState(false);
+
+  // Window management functions
+  const handleOpenWindow = (path) => {
+    setOpenWindows({ ...openWindows, [path]: true });
+    bringWindowToFront(path);
+    navigate(path);
+  };
+
+  const handleCloseWindow = (path) => {
+    setOpenWindows({ ...openWindows, [path]: false });
+  };
+
+  const handleMinimizeWindow = (path) => {
+    setMinimizedWindows({ ...minimizedWindows, [path]: true });
+  };
+
+  const handleRestoreWindow = (path) => {
+    setMinimizedWindows({ ...minimizedWindows, [path]: false });
+    bringWindowToFront(path);
+  };
+
+  const bringWindowToFront = (path) => {
+    const highestZ = Math.max(...Object.values(windowZIndex));
+    setWindowZIndex({ ...windowZIndex, [path]: highestZ + 1 });
+  };
+
+  const updateWindowPosition = (path, position) => {
+    setWindowPositions({ ...windowPositions, [path]: position });
+  };
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    // Remove this line to prevent automatically opening the home window
+    // handleOpenWindow('/');
+  };
+
+  // Add this function to your App component
+  const closeAllWindows = () => {
+    // Get all open window paths
+    const openWindowPaths = Object.keys(openWindows).filter(path => openWindows[path]);
+    
+    // Close each window
+    openWindowPaths.forEach(path => {
+      handleCloseWindow(path);
+    });
+  };
 
   // Add this useEffect for mobile warning
   useEffect(() => {
@@ -290,6 +147,17 @@ function App() {
     };
   }, []);
 
+  // Make window management functions available globally
+  useEffect(() => {
+    window.handleOpenWindow = handleOpenWindow;
+    window.closeAllWindows = closeAllWindows;
+  }, []);
+
+  // Render the mobile warning before anything else
+  if (showMobileWarning) {
+    return <MobileWarning />;
+  }
+
   if (isLoading) {
     console.log("Rendering LoadingPage");
     return <LoadingPage onComplete={handleLoadingComplete} />;
@@ -300,7 +168,6 @@ function App() {
   
   return (
     <div className="App">
-      {showMobileWarning && <MobileWarning />}
       <TopMenuBar />
       <div className="main-content" style={{flex: 1, position: 'relative'}}>
         {/* Background Grid - Set to lower opacity or remove if it interferes with the image */}
@@ -447,7 +314,11 @@ function App() {
               <ul>
                 <li><strong>Navigation Bar:</strong> Use the icons at the bottom of the screen to open different sections.</li>
                 <li><strong>Top Menu Bar:</strong> Access projects, resume, social links, and find settings</li>
-                <li><strong>Windows:</strong> Interact with windows by dragging, resizing, minimizing, or closing them.</li>
+                <li><strong>Windows:</strong> Interact with windows by dragging,  maximizing, or closing them.</li>
+                <li><strong>Desktop Icons:</strong>Double-click on icons to open their respective windows.</li>
+                <li><strong>Dark Mode:Toggle between light and dark themes in the Settings dropdown.</strong></li>
+
+
               </ul>
             </section>
           </div>

@@ -39,25 +39,25 @@ const HomePage = ({
             <div className="profile-image-container">
               <img src={profileImage} alt="Shovan Raut" className="profile-image" />
             </div>
-            <div className="profile-intro" style={{ color: '#000' }}>
-              <h1 className="profile-name" style={{ color: '#000' }}>Shovan Raut</h1>
+            <div className="profile-intro" style={{ color: '#01a7a8' }}>
+              <h1 className="profile-name" style={{ color: '#01a7a8' }}>Shovan Raut</h1>
               <h2 className="profile-title" style={{ color: '#01a7a8' }}>Innovative Tech Enthusiast</h2>
-              <p className="profile-tagline" style={{ color: '#000' }}>A dedicated computer science student skilled in Python, SQL, React, web development and passionate about Robotics.</p>
+              <p className="profile-tagline" style={{ color: '#01a7a8' }}>A dedicated computer science student skilled in Python, SQL, React, web development and passionate about Robotics.</p>
               
               <div className="contact-info">
-                <div className="contact-item" style={{ color: '#000', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                <div className="contact-item" style={{ color: '#01a7a8', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                   <span className="contact-icon">📍</span>
                   <span>Caldwell, New Jersey, USA</span>
                 </div>
-                <div className="contact-item" style={{ color: '#000', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                <div className="contact-item" style={{ color: '#01a7a8', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                   <span className="contact-icon">📱</span>
                   <span>605-670-9329</span>
                 </div>
-                <div className="contact-item" style={{ color: '#000', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                <div className="contact-item" style={{ color: '#01a7a8', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                   <span className="contact-icon">✉️</span>
                   <a href="mailto:Shovan.Rautt@gmail.com" style={{ color: '#01a7a8' }}>Shovan.Rautt@gmail.com</a>
                 </div>
-                <div className="contact-item" style={{ color: '#000', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                <div className="contact-item" style={{ color: '#01a7a8', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                   <span className="contact-icon">💻</span>
                   <a href="https://github.com/Shovan554" target="_blank" rel="noopener noreferrer" style={{ color: '#01a7a8' }}>GitHub: Shovan554</a>
                 </div>
@@ -73,3 +73,4 @@ const HomePage = ({
 };
 
 export default HomePage;
+

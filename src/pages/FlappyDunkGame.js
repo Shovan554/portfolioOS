@@ -269,13 +269,13 @@ const FlappyDunkGame = ({
       initialPosition={initialPosition}
       onPositionChange={onPositionChange}
       width={800}
-      height={600}
+      height={550}
     >
       <div className="flappy-dunk-container">
         <canvas 
           ref={canvasRef} 
           width={760} 
-          height={520} 
+          height={470} 
           className="flappy-dunk-canvas"
         />
       </div>

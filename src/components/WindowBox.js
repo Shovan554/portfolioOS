@@ -61,9 +61,10 @@ const WindowBox = ({
       
       // Calculate center position
       const centerX = Math.max(0, (viewportWidth - width) / 2);
-      const centerY = Math.max(0, (viewportHeight - height) / 4); // Slightly above center
+      // Ensure windows appear below the navbar (assuming navbar is ~50px)
+      const centerY = Math.max(60, (viewportHeight - height) / 4); // Slightly above center, but below navbar
       
-      if (initialPosition === null) {
+      if (initialPosition === null || !hasBeenCentered.current) {
         const newPosition = { x: centerX, y: centerY };
         setPosition(newPosition);
         lastValidPosition.current = newPosition;
