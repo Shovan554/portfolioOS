@@ -7,6 +7,10 @@ import wifiOnIcon from '../assets/icons/wifi-on.png';
 import wifiOffIcon from '../assets/icons/wifi-off.png';
 // Import profile picture
 import profilePic from '../assets/images/pp.PNG';
+// Import weather icons
+import sunnyIcon from '../assets/icons/sunny.png';
+import cloudyIcon from '../assets/icons/cloudy.png';
+import rainyIcon from '../assets/icons/rainy.png';
 
 const TopMenuBar = () => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -21,6 +25,21 @@ const TopMenuBar = () => {
   const [showWifiInfo, setShowWifiInfo] = useState(false);
   // Add state for profile dropdown
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  // Add state for datetime dropdown
+  const [showDateTimeInfo, setShowDateTimeInfo] = useState(false);
+  const [weatherData, setWeatherData] = useState({
+    temperature: 72,
+    condition: 'Sunny',
+    location: 'New Jersey, USA',
+    forecast: [
+      { day: 'Today', temp: 72, condition: 'Sunny' },
+      { day: 'Tomorrow', temp: 68, condition: 'Partly Cloudy' },
+      { day: 'Wednesday', temp: 65, condition: 'Rainy' }
+    ]
+  });
+  // Add state for weather loading
+  const [isWeatherLoading, setIsWeatherLoading] = useState(false);
+  const [weatherError, setWeatherError] = useState(null);
   
   // Create refs for each dropdown container
   const socialsDropdownRef = useRef(null);
@@ -29,6 +48,7 @@ const TopMenuBar = () => {
   const batteryInfoRef = useRef(null);
   const wifiInfoRef = useRef(null);
   const profileDropdownRef = useRef(null);
+  const dateTimeInfoRef = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -36,6 +56,77 @@ const TopMenuBar = () => {
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Fetch weather data based on user's location
+  useEffect(() => {
+    const fetchWeatherData = async (latitude, longitude) => {
+      setIsWeatherLoading(true);
+      setWeatherError(null);
+      
+      try {
+        // Using WeatherAPI.com
+        const apiKey = 'e3b51d8b01174839b3625130252602'; // Your WeatherAPI.com API key
+        const response = await fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=3&aqi=no&alerts=no`
+        );
+        
+        if (!response.ok) {
+          throw new Error('Weather data fetch failed');
+        }
+        
+        const data = await response.json();
+        
+        // Update weather data state with the new API response format
+        setWeatherData({
+          temperature: Math.round(data.current.temp_f),
+          condition: data.current.condition.text,
+          location: `${data.location.name}, ${data.location.country}`,
+          forecast: [
+            { 
+              day: 'Today', 
+              temp: Math.round(data.current.temp_f), 
+              condition: data.current.condition.text 
+            },
+            { 
+              day: 'Tomorrow', 
+              temp: Math.round(data.forecast.forecastday[1].day.avgtemp_f), 
+              condition: data.forecast.forecastday[1].day.condition.text 
+            },
+            { 
+              day: getDayName(new Date(data.forecast.forecastday[2].date)), 
+              temp: Math.round(data.forecast.forecastday[2].day.avgtemp_f), 
+              condition: data.forecast.forecastday[2].day.condition.text 
+            }
+          ]
+        });
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        setWeatherError('Failed to load weather data');
+      } finally {
+        setIsWeatherLoading(false);
+      }
+    };
+    
+    // Helper function to get day name
+    const getDayName = (date) => {
+      return date.toLocaleDateString('en-US', { weekday: 'long' });
+    };
+    
+    // Get user's location and fetch weather data
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeatherData(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          setWeatherError('Location access denied. Using default weather data.');
+        }
+      );
+    } else {
+      setWeatherError('Geolocation is not supported by this browser. Using default weather data.');
+    }
   }, []);
 
   // Simulate battery drain
@@ -96,6 +187,17 @@ const TopMenuBar = () => {
     return '#00cc66'; // Green for good battery
   };
 
+  // Function to get weather icon based on condition
+  const getWeatherIcon = (condition) => {
+    if (!condition) return sunnyIcon;
+    
+    condition = condition.toLowerCase();
+    if (condition.includes('rain') || condition.includes('shower') || condition.includes('drizzle')) return rainyIcon;
+    if (condition.includes('cloud') || condition.includes('overcast') || condition.includes('fog') || 
+        condition.includes('mist') || condition.includes('partly')) return cloudyIcon;
+    return sunnyIcon; // Default to sunny for clear, sun, etc.
+  };
+
   // Handle Sign Out - refreshes the page
   const handleSignOut = () => {
     window.location.reload();
@@ -105,17 +207,42 @@ const TopMenuBar = () => {
   const handleLogout = () => {
     // Option 1: Redirect to a blank page or a logout confirmation page
     window.location.href = "about:blank";
+  };
+
+  // Render weather content based on loading/error state
+  const renderWeatherContent = () => {
+    if (isWeatherLoading) {
+      return (
+        <div className="datetime-weather loading">
+          <span>Loading weather data...</span>
+        </div>
+      );
+    }
     
-    // Option 2: Show a confirmation dialog asking the user to close the window
-    // if (window.confirm("Are you sure you want to logout? Please close this window to complete the process.")) {
-    //   // You could also try window.close() after confirmation
-    //   window.close();
-    // }
+    if (weatherError) {
+      return (
+        <div className="datetime-weather error">
+          <span>{weatherError}</span>
+        </div>
+      );
+    }
     
-    // Option 3: Clear any session data and redirect to a login page
-    // localStorage.clear();
-    // sessionStorage.clear();
-    // window.location.href = "/login"; // If you have a login page
+    return (
+      <div className="datetime-weather">
+        <img 
+          src={getWeatherIcon(weatherData.condition)} 
+          alt={weatherData.condition} 
+          className="datetime-weather-icon"
+        />
+        <div className="datetime-weather-info">
+          <span className="datetime-weather-temp">{weatherData.temperature}°F</span>
+          <span className="datetime-weather-condition">{weatherData.condition}</span>
+          <div className="datetime-weather-location-container">
+            <span className="datetime-weather-location">{weatherData.location}</span>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -173,7 +300,6 @@ const TopMenuBar = () => {
                 >
                   Caldwell Robotics
                 </a>
-                
                 <a 
                   href="https://www.thecollegeadvisers.com/" 
                   target="_blank" 
@@ -268,10 +394,58 @@ const TopMenuBar = () => {
             )}
           </div>
         </div>
-        <div className="center-menu">
+        <div 
+          className="center-menu"
+          ref={dateTimeInfoRef}
+          onMouseEnter={() => setShowDateTimeInfo(true)}
+          onMouseLeave={() => setShowDateTimeInfo(false)}
+        >
           <span className="datetime">
             {formatTime(dateTime)} | {formatDate(dateTime)}
           </span>
+          {showDateTimeInfo && (
+            <div className="dropdown-menu datetime-dropdown">
+              <div className="datetime-header">
+                <h3>Calendar & Weather</h3>
+              </div>
+              
+              {/* Weather section with conditional rendering */}
+              {renderWeatherContent()}
+
+              {/* Calendar section remains unchanged */}
+              <div className="datetime-content">
+                <div className="calendar-view">
+                  <div className="calendar-month">
+                    <h4>{dateTime.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h4>
+                    <div className="calendar-grid">
+                      <div className="calendar-day-header">Su</div>
+                      <div className="calendar-day-header">Mo</div>
+                      <div className="calendar-day-header">Tu</div>
+                      <div className="calendar-day-header">We</div>
+                      <div className="calendar-day-header">Th</div>
+                      <div className="calendar-day-header">Fr</div>
+                      <div className="calendar-day-header">Sa</div>
+                      
+                      {Array.from({ length: 35 }, (_, i) => {
+                        const day = i - (new Date(dateTime.getFullYear(), dateTime.getMonth(), 1).getDay()) + 1;
+                        const isCurrentMonth = day > 0 && day <= new Date(dateTime.getFullYear(), dateTime.getMonth() + 1, 0).getDate();
+                        const isToday = day === dateTime.getDate() && isCurrentMonth;
+                        
+                        return (
+                          <div 
+                            key={i} 
+                            className={`calendar-day ${isCurrentMonth ? 'current-month' : 'other-month'} ${isToday ? 'today' : ''}`}
+                          >
+                            {isCurrentMonth ? day : ''}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="right-menu">
           {/* Battery indicator */}
@@ -290,7 +464,7 @@ const TopMenuBar = () => {
               <div 
                 className="battery-level" 
                 style={{ 
-                  width: `${batteryLevel}%`, 
+                  width: `${Math.min(batteryLevel / 100 * 14, 14)}px`, 
                   backgroundColor: getBatteryColor() 
                 }}
               ></div>
@@ -298,7 +472,7 @@ const TopMenuBar = () => {
             {showBatteryInfo && (
               <div className="status-dropdown">
                 <div className="status-info">
-                  <span>Battery: {batteryLevel.toFixed(0)}%</span>
+                  <span>Battery: {batteryLevel.toFixed(1)}%</span>
                   <div className="battery-bar">
                     <div 
                       className="battery-fill" 
@@ -352,14 +526,13 @@ const TopMenuBar = () => {
                     className="profile-pic"
                   />
                   <div className="profile-info">
-                  <span className="profile-name">Shovan Raut</span>
+                    <span className="profile-name">Shovan Raut</span>
                     <a 
                       href="https://github.com/Shovan554" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="profile-name-link"
                     >
-                      
                       <span className="profile-username">@Shovan554</span>
                     </a>
                   </div>

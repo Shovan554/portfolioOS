@@ -141,9 +141,8 @@ input:checked + .toggle-slider:before {
 }
 
 .center-menu {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  cursor: pointer;
   color: #000; /* Black text */
   font-family: 'YourFontName', sans-serif;
   font-size: 1rem;
@@ -152,6 +151,122 @@ input:checked + .toggle-slider:before {
 
 .datetime {
   color: #ffffff; /* White text for datetime */
+  padding: 0 10px;
+}
+
+.datetime-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  background: #4376f4; /* Blue background for dropdown */
+  border: 1px solid #000;
+  border-top: none;
+  z-index: 1001;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  color: #ffffff; /* White text */
+}
+
+.datetime-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.datetime-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.datetime-content {
+  padding: 10px;
+}
+
+.current-date-details {
+  text-align: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.day-of-week {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.full-date {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.full-time {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.calendar-view {
+  margin-top: 10px;
+}
+
+.calendar-month h4 {
+  text-align: center;
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 5px 0;
+}
+
+.calendar-day {
+  text-align: center;
+  padding: 5px 0;
+  font-size: 0.8rem;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  margin: 2px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-day.current-month {
+  color: #ffffff;
+}
+
+.calendar-day.other-month {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.calendar-day.today {
+  background-color: #ffff00;
+  color: #000000;
+  font-weight: bold;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .datetime-dropdown {
+    width: 250px;
+  }
+  
+  .calendar-day {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
 }
 
 .right-menu {
@@ -448,4 +563,81 @@ body.dark-mode .profile-header {
     width: 16px;
     height: 16px;
   }
+}
+
+/* Weather dropdown styling */
+.weather-dropdown {
+  min-width: 220px;
+}
+
+.weather-header {
+  display: flex;
+  padding: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  align-items: center;
+}
+
+.weather-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.current-weather {
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-temp {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.weather-condition {
+  font-size: 0.9rem;
+}
+
+.weather-location {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.weather-forecast {
+  padding: 10px;
+}
+
+.forecast-day {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.forecast-day:last-child {
+  border-bottom: none;
+}
+
+.forecast-date {
+  font-size: 0.9rem;
+  width: 70px;
+}
+
+.forecast-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.forecast-temp {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Dark mode styles for weather dropdown */
+body.dark-mode .weather-header {
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .forecast-day {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }

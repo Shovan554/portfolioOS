@@ -51,22 +51,7 @@ body.dark-mode .status-dropdown {
   border-color: #444;
 }
 
-/* Keep original hover colors */
-/*
-body.dark-mode .menu-item:hover,
-body.dark-mode .dropdown-item:hover,
-body.dark-mode .profile-name-link:hover,
-body.dark-mode .nav-item:hover,
-body.dark-mode .nav-item.active {
-  color: #ffff00;
-}
 
-body.dark-mode .nav-item::after,
-body.dark-mode .nav-item.minimized::after,
-body.dark-mode .nav-item.active::after {
-  background: #ffff00;
-}
-*/
 
 /* Window styles */
 body.dark-mode .window-box {
@@ -85,6 +70,9 @@ body.dark-mode .window-title-bar {
 
 /* Text styles */
 body.dark-mode .page-content h1 {
+  color: #61dafb;
+}
+body.dark-mode .page-content h2 {
   color: #61dafb;
 }
 

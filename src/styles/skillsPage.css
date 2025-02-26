@@ -17,6 +17,13 @@
   padding-bottom: 10px;
 }
 
+/* Adding a separate class for h2 headings */
+.section-heading {
+  font-size: 1.5rem;
+  margin: 15px 0;
+  color: #243A62;
+}
+
 .skills-content h2 {
   font-size: 1.5rem;
   margin: 15px 0;
@@ -46,7 +53,7 @@
 .skill-item {
   display: flex;
   align-items: center;
-  background-color: white;
+  background-color: rgb(0, 0, 0);
   padding: 10px 15px;
   border-radius: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -103,3 +110,96 @@
     width: 100%;
   }
 }
+
+/* Dark mode support */
+body.dark-mode .skills-content {
+  color: #fff;
+}
+
+body.dark-mode .skills-content h1 {
+  color: #61dafb;
+  border-bottom-color: #61dafb;
+}
+
+/* Force ALL h2 elements to be pure white in dark mode with highest specificity */
+body.dark-mode h2 {
+  color: #ffffff !important;
+}
+
+body.dark-mode .skills-content h2,
+body.dark-mode .section-heading,
+body.dark-mode .skills-highlights h2,
+body.dark-mode .interests-section h2 {
+  color: #ffffff !important; /* Force pure white with !important */
+}
+
+body.dark-mode .skill-category h2 {
+  color: #ffffff !important; /* Force pure white with !important */
+}
+
+body.dark-mode .skills-content h3,
+body.dark-mode .skills-content h4,
+body.dark-mode .skills-content h5,
+body.dark-mode .skills-content h6,
+body.dark-mode .skills-content p,
+body.dark-mode .skills-content span,
+body.dark-mode .skills-content li {
+  color: #fff;
+}
+
+body.dark-mode .skill-category {
+  background-color: rgba(97, 218, 251, 0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .skill-category h3,
+body.dark-mode .skill-category h4 {
+  color: #fff;
+}
+
+body.dark-mode .skill-item {
+  background-color: #1e2a3a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .skill-icon {
+  color: #61dafb;
+}
+
+body.dark-mode .skill-name {
+  color: #000;
+}
+
+body.dark-mode .skills-highlights {
+  background-color: rgba(97, 218, 251, 0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .skills-highlights h2 {
+  color: #ffffff !important; /* Force pure white with !important */
+}
+
+body.dark-mode .highlight-icon {
+  color: #61dafb;
+}
+
+body.dark-mode .skills-highlights li {
+  color: #000;
+}
+
+/* Interest section dark mode styles */
+body.dark-mode .interests-section .interest-icon {
+  color: #000000 !important;
+}
+
+body.dark-mode .interests-section .interests-list .interest-item span {
+  color: #000000 !important;
+}
+
+body.dark-mode .interests-section .interest-item {
+  background-color: #1e2a3a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+
