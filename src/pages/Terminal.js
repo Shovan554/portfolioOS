@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import WindowBox from '../components/WindowBox';
 import '../styles/terminal.css';
+import cheeseburgerGif from '../assets/gif/cheeseburger.gif';
+import codeGif from '../assets/gif/code.gif';
+import duckGif from '../assets/gif/duck.gif';
+import runGif from '../assets/gif/run.gif';
+import planetGif from '../assets/gif/planet.gif';
 
 const Terminal = ({ 
   isOpen = false, 
@@ -18,7 +23,23 @@ const Terminal = ({
     { type: 'welcome', content: "Type 'help' to see available commands" },
   ]);
   const [currentDirectory, setCurrentDirectory] = useState('/');
+  const [currentAnimation, setCurrentAnimation] = useState(null); // Track current animation
   
+  // Define available animations
+  const animations = [
+    { name: 'cheeseburger', gif: cheeseburgerGif, text: 'Mmm, cheeseburger!' },
+    { name: 'code', gif: codeGif, text: 'Coding in progress...' },
+    { name: 'duck', gif: duckGif, text: 'Quack quack!' },
+    { name: 'run', gif: runGif, text: 'Run, run, run!' },
+    { name: 'planet', gif: planetGif, text: 'Exploring the cosmos...' }
+  ];
+
+  // Function to get a random animation
+  const getRandomAnimation = () => {
+    const randomIndex = Math.floor(Math.random() * animations.length);
+    return animations[randomIndex];
+  };
+
   // Define the file system structure
   const fileSystem = {
     '/': {
@@ -99,7 +120,10 @@ const Terminal = ({
           { type: 'output', content: '  pwd - Print working directory' },
           { type: 'output', content: '  clear - Clear the terminal' },
           { type: 'output', content: '  whoami - Display user information' },
-          { type: 'output', content: '  date - Display current date and time' }
+          { type: 'output', content: '  date - Display current date and time' },
+          { type: 'output', content: '  animation - Show a random animation' },
+          { type: 'output', content: '  shutdown - Shutdown the system' },
+          { type: 'output', content: '  refresh - Refresh the page' }
         ];
         
       case 'ls':
@@ -192,6 +216,22 @@ const Terminal = ({
       case 'date':
         return [{ type: 'output', content: new Date().toString() }];
         
+      case 'animation':
+        const randomAnim = getRandomAnimation();
+        setCurrentAnimation(randomAnim);
+        return [{ type: 'output', content: randomAnim.text }];
+        
+      case 'shutdown':
+        return [
+          { type: 'output', content: 'Initiating system shutdown...' },
+          { type: 'output', content: 'Please wait while the system shuts down.' }
+        ].concat(initiateShutdown());
+        
+      case 'refresh':
+        return [
+          { type: 'output', content: 'Refreshing page...' }
+        ].concat(refreshPage());
+        
       case '':
         return [];
         
@@ -200,88 +240,143 @@ const Terminal = ({
     }
   };
 
-  // Handle command submission
+  // Function to initiate system shutdown
+  const initiateShutdown = () => {
+    console.log("Initiating shutdown sequence");
+    
+    // Create a shutdown screen
+    setTimeout(() => {
+      const shutdownScreen = document.createElement('div');
+      shutdownScreen.className = 'shutdown-screen';
+      shutdownScreen.style.position = 'fixed';
+      shutdownScreen.style.top = '0';
+      shutdownScreen.style.left = '0';
+      shutdownScreen.style.width = '100%';
+      shutdownScreen.style.height = '100%';
+      shutdownScreen.style.backgroundColor = '#000';
+      shutdownScreen.style.color = '#fff';
+      shutdownScreen.style.display = 'flex';
+      shutdownScreen.style.justifyContent = 'center';
+      shutdownScreen.style.alignItems = 'center';
+      shutdownScreen.style.zIndex = '9999';
+      
+      shutdownScreen.innerHTML = '<div>Shutting down...</div>';
+      document.body.appendChild(shutdownScreen);
+      
+      // Refresh the page after a delay
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    }, 1000);
+    
+    return [];
+  };
+
+  // Function to refresh the page
+  const refreshPage = () => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+    
+    return [];
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Add the command to output
-    const newOutput = [
-      ...output,
-      { type: 'command', content: `${currentDirectory} $ ${input}` }
-    ];
+    // Add the command to the output
+    const newOutput = [...output, { type: 'command', content: `${currentDirectory} $ ${input}` }];
     
-    // Execute the command and get results
-    const results = executeCommand(input);
+    // Execute the command and get the result
+    const result = executeCommand(input);
     
-    // Update the output state
-    if (results === null) {
-      // If clear command was executed, don't add anything to output
-      // Output is already cleared by setOutput([]) in executeCommand
+    // Update the output with the result
+    if (result) {
+      setOutput([...newOutput, ...result]);
     } else {
-      // For other commands, update with results
-      setOutput([...newOutput, ...(results || [])]);
+      setOutput(newOutput);
     }
     
     // Clear the input
     setInput('');
     
-    // Scroll to bottom
-    setTimeout(() => {
-      if (terminalRef.current) {
+    // Scroll to the bottom of the terminal
+    if (terminalRef.current) {
+      setTimeout(() => {
         terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-      }
-    }, 0);
+      }, 0);
+    }
   };
 
-  // Auto-scroll to bottom when output changes
+  // Add event listener for ESC key to close animations
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, [output]);
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && currentAnimation) {
+        setCurrentAnimation(null);
+      }
+    };
 
-  // Focus input when terminal is opened
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentAnimation]);
+
+  // Auto-focus the input when the terminal is opened
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        const inputElement = document.querySelector('.terminal-input');
-        if (inputElement) {
-          inputElement.focus();
-        }
-      }, 100);
+    if (isOpen && terminalRef.current) {
+      const inputElement = terminalRef.current.querySelector('.terminal-input');
+      if (inputElement) {
+        inputElement.focus();
+      }
     }
   }, [isOpen]);
-  
+
   return (
     <WindowBox 
       title="Terminal" 
       isOpen={isOpen} 
-      setIsOpen={setIsOpen}
       onClose={onClose}
       zIndex={zIndex}
       onFocus={onFocus}
       initialPosition={initialPosition}
       onPositionChange={onPositionChange}
-      width={700}
+      width={600}
       height={500}
     >
       <div className="terminal-container" ref={terminalRef}>
         <div className="terminal-content">
-          <div className="terminal-output">
-            {output.map((line, index) => (
-              <p key={index} className={`terminal-line ${line.type}`}>{line.content}</p>
-            ))}
-          </div>
-          <form onSubmit={handleSubmit} className="terminal-input-line">
-            <span className="terminal-prompt">{currentDirectory} $ </span>
-            <input 
-              type="text" 
-              className="terminal-input"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              autoFocus
-            />
-          </form>
+          {currentAnimation && (
+            <div className="animation-container">
+              <img 
+                src={currentAnimation.gif} 
+                alt={currentAnimation.name} 
+                className="animation-gif" 
+              />
+              <p className="animation-text">Press ESC to close</p>
+            </div>
+          )}
+          
+          {!currentAnimation && (
+            <>
+              <div className="terminal-output">
+                {output.map((line, index) => (
+                  <p key={index} className={`terminal-line ${line.type}`}>{line.content}</p>
+                ))}
+              </div>
+              <form onSubmit={handleSubmit} className="terminal-input-line">
+                <span className="terminal-prompt">{currentDirectory} $ </span>
+                <input 
+                  type="text" 
+                  className="terminal-input"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  autoFocus
+                />
+              </form>
+            </>
+          )}
         </div>
       </div>
     </WindowBox>
@@ -289,3 +384,11 @@ const Terminal = ({
 };
 
 export default Terminal;
+
+
+
+
+
+
+
+
