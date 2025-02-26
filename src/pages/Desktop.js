@@ -10,6 +10,7 @@ import gameIcon from '../assets/icons/game.png'; // You may need to create/impor
 
 const Desktop = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [iconPosition, setIconPosition] = useState({ x: 0, y: 0 });
   const navigate = useNavigate();
 
   // Check for dark mode and update state when it changes
@@ -38,6 +39,25 @@ const Desktop = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Calculate and update icon position based on window dimensions
+  useEffect(() => {
+    const updateIconPosition = () => {
+      // Position the icon in the top right corner with some padding
+      const x = Math.max(window.innerWidth - 100, 20); // At least 20px from left
+      const y = 50; // 50px from top
+      setIconPosition({ x, y });
+    };
+
+    // Set initial position
+    updateIconPosition();
+
+    // Update position when window is resized
+    window.addEventListener('resize', updateIconPosition);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', updateIconPosition);
+  }, []);
+
   // Handle icon click to open the Flappy Dunk window
   const handleFlappyDunkClick = () => {
     console.log('Opening Flappy Dunk window');
@@ -64,7 +84,7 @@ const Desktop = () => {
         icon={gameIcon} 
         title="Flappy Dunk" 
         onClick={handleFlappyDunkClick} 
-        position={{ x: window.innerWidth - 100, y: 50 }}
+        position={iconPosition}
       />
     </div>
   );

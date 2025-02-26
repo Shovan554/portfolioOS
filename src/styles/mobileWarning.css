@@ -1,0 +1,114 @@
+.mobile-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 10000; /* Ensure it's above everything else */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.warning-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.warning-content h2 {
+  color: #ff6b6b;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.warning-content p {
+  margin-bottom: 15px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.warning-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.resume-link {
+  display: block;
+  background-color: #01a7a8;
+  color: white;
+  text-decoration: none;
+  padding: 14px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.resume-link:hover {
+  background-color: #018788;
+}
+
+.social-links {
+  margin-top: 10px;
+}
+
+.social-links p {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-button {
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.social-button:hover {
+  opacity: 0.9;
+}
+
+.github {
+  background-color: #24292e;
+  color: white;
+}
+
+.linkedin {
+  background-color: #0077b5;
+  color: white;
+}
+
+/* Dark mode styles */
+body.dark-mode .warning-content {
+  background-color: #1E3D4A;
+}
+
+body.dark-mode .warning-content h2 {
+  color: #ff8080;
+}
+
+body.dark-mode .warning-content p {
+  color: #f0f0f0;
+}
+
+body.dark-mode .social-links p {
+  color: #ccc;
+}

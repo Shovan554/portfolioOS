@@ -14,6 +14,7 @@ import TopMenuBar from './components/TopMenuBar';
 import './App.css';
 import './styles/darkMode.css'; // Import the dark mode styles
 import './styles/desktop.css'; // Import the desktop styles for help button and help box
+import MobileWarning from './components/MobileWarning';
 
 function App() {
   // Force isLoading to true on initial render
@@ -260,6 +261,30 @@ function App() {
     return topPath;
   };
 
+  // Add state for mobile warning
+  const [showMobileWarning, setShowMobileWarning] = useState(false);
+
+  // Add this useEffect for mobile warning
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (window.innerWidth < 845) {
+        setShowMobileWarning(true);
+      } else {
+        setShowMobileWarning(false);
+      }
+    };
+    
+    // Check on initial load
+    checkScreenSize();
+    
+    // Check when window is resized
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
+  }, []);
+
   if (isLoading) {
     console.log("Rendering LoadingPage");
     return <LoadingPage onComplete={handleLoadingComplete} />;
@@ -270,6 +295,7 @@ function App() {
   
   return (
     <div className="App">
+      {showMobileWarning && <MobileWarning />}
       <TopMenuBar />
       <div className="main-content" style={{flex: 1, position: 'relative'}}>
         {/* Background Grid - Set to lower opacity or remove if it interferes with the image */}

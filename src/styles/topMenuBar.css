@@ -23,7 +23,7 @@
   display: flex;
   gap: 5px;  /* 5px gap between menu items */
   padding: 0;
-  margin: 0;
+  margin: 0 0 0 10px; /* Add 10px left margin */
   height: 100%;
   align-items: center;
 }
@@ -31,7 +31,7 @@
 .menu-item {
   color: #ffffff; /* White text */
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem;
+  font-size: 0.85rem; /* Reduced from 1rem */
   cursor: pointer;
   padding: 0 6px;
   text-transform: uppercase;
@@ -145,7 +145,7 @@ input:checked + .toggle-slider:before {
   cursor: pointer;
   color: #000; /* Black text */
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem;
+  font-size: 0.85rem; /* Reduced from 1rem */
   font-weight: 600; /* Make text slightly bolder for better contrast */
 }
 
@@ -272,7 +272,7 @@ input:checked + .toggle-slider:before {
 .right-menu {
   color: #ffffff; /* White text */
   font-family: 'YourFontName', sans-serif;
-  font-size: 1rem;
+  font-size: 0.85rem; /* Reduced from 1rem */
   padding: 0 10px;
   margin: 0;
   height: 100%;
@@ -296,7 +296,7 @@ input:checked + .toggle-slider:before {
   height: 100%;
   display: flex;
   align-items: center;
-  font-size: 1.05rem;
+  font-size: 0.9rem; /* Reduced from 1.05rem */
   font-weight: 700; /* Make username bolder */
 }
 
@@ -542,20 +542,21 @@ body.dark-mode .profile-header {
 
 @media (max-width: 768px) {
   .menu-item {
-    font-size: 0.9rem; /* Increased from 0.8rem */
+    font-size: 0.75rem; /* Reduced from 0.9rem */
     padding: 0 4px;
   }
   
   .left-menu {
     gap: 2px;  /* Maintain 2px gap at smaller screens */
+    margin: 0 0 0 5px; /* Smaller 5px left margin on mobile */
   }
 
   .center-menu {
-    font-size: 0.9rem; /* Increased from 0.8rem */
+    font-size: 0.75rem; /* Reduced from 0.9rem */
   }
 
   .right-menu {
-    font-size: 0.9rem; /* Increased from 0.8rem */
+    font-size: 0.75rem; /* Reduced from 0.9rem */
     gap: 5px;
   }
   

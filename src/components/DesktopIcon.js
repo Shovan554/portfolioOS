@@ -11,6 +11,28 @@ const DesktopIcon = ({ icon, title, onClick, position = { x: 20, y: 20 } }) => {
     setCurrentPosition(position);
   }, [position]);
 
+  // Ensure icon stays within viewport bounds when window is resized
+  useEffect(() => {
+    const handleResize = () => {
+      if (isDragging) return; // Don't adjust during drag operations
+      
+      setCurrentPosition(prevPos => {
+        // Calculate bounds
+        const maxX = Math.max(0, window.innerWidth - 80); // 80px is icon width
+        const maxY = Math.max(0, window.innerHeight - 100); // 100px is icon height
+        
+        // Ensure position is within bounds
+        return {
+          x: Math.min(maxX, prevPos.x),
+          y: Math.min(maxY, prevPos.y)
+        };
+      });
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isDragging]);
+
   const handleMouseDown = (e) => {
     // Prevent default to avoid text selection during drag
     e.preventDefault();
@@ -32,8 +54,8 @@ const DesktopIcon = ({ icon, title, onClick, position = { x: 20, y: 20 } }) => {
     if (!isDragging) return;
     
     // Calculate new position based on mouse position and drag offset
-    const newX = e.clientX - dragOffset.x;
-    const newY = e.clientY - dragOffset.y;
+    const newX = Math.max(0, Math.min(window.innerWidth - 80, e.clientX - dragOffset.x));
+    const newY = Math.max(0, Math.min(window.innerHeight - 100, e.clientY - dragOffset.y));
     
     // Update position
     setCurrentPosition({ x: newX, y: newY });

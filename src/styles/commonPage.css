@@ -158,11 +158,60 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .page-content {
+    padding: 10px;
+    min-width: auto;
+    min-height: auto;
+  }
+  
+  .page-content h1 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  
+  .page-content p {
+    line-height: 1.5;
+    font-size: 0.9rem;
+  }
+  
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: 15px;
   }
   
   .interests-list {
     justify-content: center;
+    gap: 15px;
+  }
+  
+  .interest-item {
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+  }
+  
+  .interest-icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .page-content {
+    padding: 8px;
+  }
+  
+  .page-content h1 {
+    font-size: 18px;
+  }
+  
+  .page-content p {
+    font-size: 0.85rem;
+  }
+  
+  .interest-item {
+    width: 70px;
+    height: 70px;
   }
 }
