@@ -48,7 +48,7 @@ const FlappyDunkGame = ({
       width: 40,
       height: 40,
       velocity: 0,
-      gravity: 0.2,
+      gravity: 0.1,
       jump: -4
     };
     
