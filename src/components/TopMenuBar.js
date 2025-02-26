@@ -40,7 +40,20 @@ const TopMenuBar = () => {
   // Add state for weather loading
   const [isWeatherLoading, setIsWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState(null);
-  
+  const [locationPermission, setLocationPermission] = useState('prompt'); // 'prompt', 'granted', 'denied'
+  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+
+  const handleLocationPermission = (granted) => {
+    setShowLocationPrompt(false);
+    if (granted) {
+      setLocationPermission('granted');
+    } else {
+      setLocationPermission('denied');
+      setWeatherError('Weather data unavailable without location access.');
+      setIsWeatherLoading(false);
+    }
+  };
+
   // Create refs for each dropdown container
   const socialsDropdownRef = useRef(null);
   const projectsDropdownRef = useRef(null);
@@ -127,7 +140,7 @@ const TopMenuBar = () => {
     } else {
       setWeatherError('Geolocation is not supported by this browser. Using default weather data.');
     }
-  }, []);
+  }, [locationPermission]);
 
   // Simulate battery drain
   useEffect(() => {
@@ -245,8 +258,36 @@ const TopMenuBar = () => {
     );
   };
 
+  const renderLocationPrompt = () => {
+    if (!showLocationPrompt) return null;
+    
+    return (
+      <div className="location-permission-modal">
+        <div className="location-permission-content">
+          <h3>Location Access</h3>
+          <p>Portfolio OS would like to access your location to show local weather information.</p>
+          <div className="location-permission-buttons">
+            <button 
+              className="location-deny-btn"
+              onClick={() => handleLocationPermission(false)}
+            >
+              Deny
+            </button>
+            <button 
+              className="location-allow-btn"
+              onClick={() => handleLocationPermission(true)}
+            >
+              Allow
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="top-menubar">
+      {renderLocationPrompt()}
       <div className="menubar-container">
         <div className="left-menu">
           <div 
