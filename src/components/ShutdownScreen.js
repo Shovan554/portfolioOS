@@ -110,7 +110,7 @@ const ShutdownScreen = ({ onComplete }) => {
       setProgress(prevProgress => {
         // Increase by 2.5% each time to reach 100% in 4 seconds
         // (100% / 4 seconds) / 10 intervals per second = 2.5% per interval
-        const newProgress = prevProgress + 2.5;
+        const newProgress = prevProgress + 5.5;
         
         if (newProgress >= 100) {
           clearInterval(progressInterval);
