@@ -82,8 +82,24 @@ function App() {
 
   // Window management functions
   const handleOpenWindow = (path) => {
-    setOpenWindows({ ...openWindows, [path]: true });
+    // Set the window to open without affecting other windows
+    setOpenWindows(prevOpenWindows => ({
+      ...prevOpenWindows,
+      [path]: true
+    }));
+    
+    // If the window is minimized, restore it
+    if (minimizedWindows[path]) {
+      setMinimizedWindows(prevMinimizedWindows => ({
+        ...prevMinimizedWindows,
+        [path]: false
+      }));
+    }
+    
+    // Bring the window to front
     bringWindowToFront(path);
+    
+    // Navigate to the path
     navigate(path);
   };
 
