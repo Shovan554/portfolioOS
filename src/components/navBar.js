@@ -8,6 +8,7 @@ import skillsIcon from '../assets/icons/skills.png';
 import proficiencyIcon from '../assets/icons/proficiency.png';
 import experienceIcon from '../assets/icons/experience.png';
 import educationIcon from '../assets/icons/education.png';
+import gameIcon from '../assets/icons/game.png'; // Import game icon for Flappy Dunk
 
 const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpenWindow, windowZIndex }) => {
   const location = useLocation();
@@ -46,13 +47,18 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
     }
   };
 
-  // Define navItems with proper null checks
-  const navItems = [
+  // Define pinned navItems with proper null checks (excluding Flappy Dunk)
+  const pinnedNavItems = [
     { name: 'Home', path: '/', icon: homeIcon },
     { name: 'Skills', path: '/skills', icon: skillsIcon },
     { name: 'Proficiency', path: '/proficiency', icon: proficiencyIcon },
     { name: 'Experience', path: '/experience', icon: experienceIcon },
     { name: 'Education', path: '/education', icon: educationIcon }
+  ];
+
+  // Define dynamic items that only appear when open
+  const dynamicNavItems = [
+    { name: 'Flappy Dunk', path: '/flappydunk', icon: gameIcon }
   ];
 
   return (
@@ -72,8 +78,8 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
           <span className="nav-text">Home</span>
         </button>
         
-        {/* Other nav items */}
-        {navItems.slice(1).map((item) => (
+        {/* Pinned nav items */}
+        {pinnedNavItems.slice(1).map((item) => (
           <button
             key={item.name}
             className={`nav-item ${topWindowPath === item.path ? 'active' : ''} ${openWindows && minimizedWindows && openWindows[item.path] && minimizedWindows[item.path] ? 'minimized' : ''}`}
@@ -86,6 +92,24 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
             />
             <span className="nav-text">{item.name}</span>
           </button>
+        ))}
+        
+        {/* Dynamic nav items - only show when open */}
+        {dynamicNavItems.map((item) => (
+          openWindows && openWindows[item.path] ? (
+            <button
+              key={item.name}
+              className={`nav-item ${topWindowPath === item.path ? 'active' : ''} ${openWindows && minimizedWindows && openWindows[item.path] && minimizedWindows[item.path] ? 'minimized' : ''}`}
+              onClick={() => handleNavClick(item.path)}
+            >
+              <img 
+                src={item.icon} 
+                alt={item.name} 
+                className="nav-icon"
+              />
+              <span className="nav-text">{item.name}</span>
+            </button>
+          ) : null
         ))}
       </div>
     </nav>

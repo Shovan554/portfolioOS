@@ -8,6 +8,7 @@ import ProficiencyPage from './pages/ProficiencyPage';
 import ExperiencePage from './pages/ExperiencePage';
 import EducationPage from './pages/EducationPage';
 import ProjectsPage from './pages/ProjectsPage';
+import FlappyDunkGame from './pages/FlappyDunkGame';
 import NavBar from './components/navBar';
 import TopMenuBar from './components/TopMenuBar';
 import './App.css';
@@ -24,7 +25,8 @@ function App() {
     '/proficiency': false,
     '/experience': false,
     '/education': false,
-    '/projects': false
+    '/projects': false,
+    '/flappydunk': false
   });
   
   // Add state for help box
@@ -42,7 +44,8 @@ function App() {
     '/proficiency': false,
     '/experience': false,
     '/education': false,
-    '/projects': false
+    '/projects': false,
+    '/flappydunk': false
   });
   
   // Track z-index for each window
@@ -52,7 +55,8 @@ function App() {
     '/proficiency': 12,
     '/experience': 13,
     '/education': 14,
-    '/projects': 15
+    '/projects': 15,
+    '/flappydunk': 16
   });
   
   // Track window positions - initialize with centered positions
@@ -63,11 +67,12 @@ function App() {
     '/proficiency': null,
     '/experience': null,
     '/education': null,
-    '/projects': null
+    '/projects': null,
+    '/flappydunk': null
   });
   
   // Current highest z-index
-  const [highestZIndex, setHighestZIndex] = useState(15);
+  const [highestZIndex, setHighestZIndex] = useState(16);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -344,6 +349,16 @@ function App() {
           onPositionChange={(position) => updateWindowPosition('/projects', position)}
         />
         
+        <FlappyDunkGame 
+          isOpen={openWindows['/flappydunk'] && !minimizedWindows['/flappydunk']} 
+          setIsOpen={(isOpen) => isOpen ? handleRestoreWindow('/flappydunk') : handleMinimizeWindow('/flappydunk')}
+          onClose={() => handleCloseWindow('/flappydunk')}
+          zIndex={windowZIndex['/flappydunk']}
+          onFocus={() => bringWindowToFront('/flappydunk')}
+          initialPosition={windowPositions['/flappydunk']}
+          onPositionChange={(position) => updateWindowPosition('/flappydunk', position)}
+        />
+        
         {/* Hidden Routes for navigation */}
         <div style={{ display: 'none' }}>
           <Routes>
@@ -354,6 +369,7 @@ function App() {
             <Route path="/experience" element={<div />} />
             <Route path="/education" element={<div />} />
             <Route path="/projects" element={<div />} />
+            <Route path="/flappydunk" element={<div />} />
           </Routes>
         </div>
       </div>
