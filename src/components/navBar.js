@@ -121,5 +121,3 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
 
 export default NavBar;
 
-
-

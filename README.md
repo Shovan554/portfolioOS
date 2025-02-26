@@ -7,9 +7,7 @@ A creative portfolio website designed to mimic an operating system interface.
 ## 🚀 Features
 
 - **OS-like Interface**: Complete with a top menu bar, desktop, and taskbar
-- **Interactive Windows**: Open, close, minimize, and resize windows
 - **Dark Mode**: Toggle between light and dark themes
-- **Responsive Design**: Works on desktop and mobile devices
 - **Project Showcase**: View my projects in a unique and interactive way
 - **Terminal Emulator**: Interact with a command-line interface to explore content
 - **Window Management**: Drag, resize, and manage multiple windows simultaneously
@@ -18,9 +16,9 @@ A creative portfolio website designed to mimic an operating system interface.
 
 - React.js
 - CSS3
-- JavaScript (ES6+)
-- React Router
-- Create React App
+- JavaScript 
+
+
 
 ## 🛠️ Installation
 

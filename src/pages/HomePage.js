@@ -31,8 +31,8 @@ const HomePage = ({
         onFocus={onFocus}
         initialPosition={initialPosition}
         onPositionChange={onPositionChange}
-        width={1100}
-        height={750}
+        width={800}
+        height={600}
       >
         <div className="home-content">
           <div className="profile-section">

@@ -315,11 +315,14 @@ function App() {
                 <li><strong>Navigation Bar:</strong> Use the icons at the bottom of the screen to open different sections.</li>
                 <li><strong>Top Menu Bar:</strong> Access projects, resume, social links, and find settings</li>
                 <li><strong>Windows:</strong> Interact with windows by dragging,  maximizing, or closing them.</li>
-                <li><strong>Desktop Icons:</strong>Double-click on icons to open their respective windows.</li>
+                <li><strong>Terminal: </strong>Use the terminal with the custom commands.</li>
+                <li><strong>Flappy Dunk:</strong>Bored ? Try the Flappy Dunk game and set a record  </li>
                 <li><strong>Dark Mode:Toggle between light and dark themes in the Settings dropdown.</strong></li>
+             
 
 
               </ul>
+              <p>More features to be rolled out sooon!</p>
             </section>
           </div>
         </div>

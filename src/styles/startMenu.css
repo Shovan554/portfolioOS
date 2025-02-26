@@ -1,0 +1,164 @@
+.start-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1500;
+  background-color: transparent;
+}
+
+.start-menu {
+  position: absolute;
+  bottom: 45px; /* Position right above the navbar */
+  left: 0;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #000;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+  z-index: 1501;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.start-menu-header {
+  padding: 15px;
+  background-color: #4376f4;
+  color: white;
+  border-bottom: 1px solid #000;
+}
+
+.start-menu-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.start-menu-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.start-menu-user-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.start-menu-user-info p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.start-menu-content {
+  display: flex;
+  height: 400px;
+  overflow: hidden;
+}
+
+.start-menu-left {
+  flex: 2;
+  padding: 10px;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.start-menu-right {
+  flex: 1;
+  padding: 10px;
+  background-color: rgba(240, 240, 240, 0.5);
+}
+
+.start-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.start-menu-item:hover {
+  background-color: rgba(67, 118, 244, 0.1);
+}
+
+.start-menu-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.start-menu-quick-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.start-menu-quick-links h4 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.quick-link {
+  padding: 8px 5px;
+  color: #4376f4;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.quick-link:hover {
+  background-color: rgba(67, 118, 244, 0.1);
+  text-decoration: underline;
+}
+
+/* Dark mode styles */
+body.dark-mode .start-menu {
+  background-color: rgba(30, 30, 30, 0.95);
+  border-color: #444;
+}
+
+body.dark-mode .start-menu-header {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .start-menu-item {
+  color: #fff;
+}
+
+body.dark-mode .start-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .start-menu-right {
+  background-color: rgba(40, 40, 40, 0.5);
+}
+
+body.dark-mode .start-menu-quick-links h4 {
+  color: #ddd;
+}
+
+body.dark-mode .quick-link {
+  color: #7aa2ff;
+}
+
+body.dark-mode .quick-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
