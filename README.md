@@ -11,12 +11,15 @@ A creative portfolio website designed to mimic an operating system interface.
 - **Dark Mode**: Toggle between light and dark themes
 - **Responsive Design**: Works on desktop and mobile devices
 - **Project Showcase**: View my projects in a unique and interactive way
+- **Terminal Emulator**: Interact with a command-line interface to explore content
+- **Window Management**: Drag, resize, and manage multiple windows simultaneously
 
 ## 💻 Tech Stack
 
 - React.js
 - CSS3
 - JavaScript (ES6+)
+- React Router
 - Create React App
 
 ## 🛠️ Installation
@@ -28,7 +31,7 @@ A creative portfolio website designed to mimic an operating system interface.
 
 2. Navigate to the project directory:
    ```bash
-   cd portfolio-os
+   cd portfolioOS
    ```
 
 3. Install dependencies:
@@ -49,12 +52,14 @@ A creative portfolio website designed to mimic an operating system interface.
 - Use the top menu bar to access projects, resume, and social links
 - Toggle dark mode in the Settings dropdown
 - Interact with windows by dragging, resizing, minimizing, or closing them
+- Try the terminal by typing 'help' to see available commands
+- Press the '?' button for help at any time
 
 ## 🔗 Links
 
-- [Live Demo](https://your-portfolio-url.com)
+- [Live Demo](https://shovanraut.vercel.app)
 - [GitHub Repository](https://github.com/Shovan554/portfolio-os)
-- [LinkedIn](https://www.linkedin.com/in/shovan-raut-81537b18a/)
+
 
 ## 📄 License
 
