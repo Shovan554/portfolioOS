@@ -6,8 +6,8 @@
   left: 0;
   bottom: 0;
   right: 0;
-  /* The background image is now set inline in the component */
   z-index: 1; /* Ensure it's above the grid but below windows */
+  transition: background-image 0.5s ease; /* Add transition for smooth background change */
 }
 
 /* Help Button Styles */

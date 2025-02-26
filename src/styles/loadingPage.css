@@ -1,5 +1,5 @@
 .loading-page {
-  background-color: #243A62;
+  background-color: #4376f4; /* Updated to match navbar blue color */
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -44,7 +44,7 @@
 }
 
 body.dark-mode .loading-page {
-  background-color: #2A5465;
+  background-color: #000000; /* Black background in dark mode */
 }
 
 body.dark-mode .grid-overlay {

@@ -15,6 +15,7 @@ const WindowBox = ({
   onPositionChange,
   isLoading = false
 }) => {
+  // Initialize position with a default value to prevent undefined errors
   const [position, setPosition] = useState(initialPosition || { x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -34,6 +35,26 @@ const WindowBox = ({
 
   // Center window on first render or when initialPosition is null
   useEffect(() => {
+    // Always center the loading window immediately when component mounts
+    if (windowRef.current && (isLoading || title === "Loading")) {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate center position
+      const centerX = Math.max(0, (viewportWidth - width) / 2);
+      const centerY = Math.max(0, (viewportHeight - height) / 2); // Perfectly centered vertically
+      
+      const newPosition = { x: centerX, y: centerY };
+      setPosition(newPosition);
+      lastValidPosition.current = newPosition;
+      if (onPositionChange) {
+        onPositionChange(newPosition);
+      }
+      hasBeenCentered.current = true;
+      return;
+    }
+    
+    // For other windows, center only if not centered yet or initialPosition is null
     if (windowRef.current && (!hasBeenCentered.current || initialPosition === null)) {
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
@@ -42,8 +63,7 @@ const WindowBox = ({
       const centerX = Math.max(0, (viewportWidth - width) / 2);
       const centerY = Math.max(0, (viewportHeight - height) / 4); // Slightly above center
       
-      // For loading page, always center it
-      if (isLoading || title === "Loading" || initialPosition === null) {
+      if (initialPosition === null) {
         const newPosition = { x: centerX, y: centerY };
         setPosition(newPosition);
         lastValidPosition.current = newPosition;
@@ -62,7 +82,15 @@ const WindowBox = ({
       return;
     }
     
+    // Use a ref to track the current animation
+    const animationRef = { current: null };
+    
     if (isOpen) {
+      // Skip animation if window is already open
+      if (animationState === 'open') {
+        return;
+      }
+      
       // Calculate starting position near the navbar
       const startPosition = getNavbarPosition();
       
@@ -73,22 +101,25 @@ const WindowBox = ({
       setAnimationState('opening');
       
       // After a small delay, set to open state
-      setTimeout(() => {
-        setAnimationState('open');
-        // Reset to proper position after animation
-        if (!isMaximized && initialPosition) {
-          setPosition(initialPosition);
-          lastValidPosition.current = initialPosition;
-        } else if (!isMaximized && !hasBeenCentered.current) {
-          const viewportWidth = window.innerWidth;
-          const viewportHeight = window.innerHeight;
-          const centerPosition = { 
-            x: Math.max(0, (viewportWidth - width) / 2), 
-            y: Math.max(0, (viewportHeight - height) / 4)
-          };
-          setPosition(centerPosition);
-          lastValidPosition.current = centerPosition;
-          hasBeenCentered.current = true;
+      animationRef.current = setTimeout(() => {
+        // Check if component is still mounted
+        if (windowRef.current) {
+          setAnimationState('open');
+          // Reset to proper position after animation
+          if (!isMaximized && initialPosition) {
+            setPosition(initialPosition);
+            lastValidPosition.current = initialPosition;
+          } else if (!isMaximized && !hasBeenCentered.current) {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const centerPosition = { 
+              x: Math.max(0, (viewportWidth - width) / 2), 
+              y: Math.max(0, (viewportHeight - height) / 4)
+            };
+            setPosition(centerPosition);
+            lastValidPosition.current = centerPosition;
+            hasBeenCentered.current = true;
+          }
         }
       }, 300); // Delay to ensure animation completes
     } else {
@@ -104,11 +135,20 @@ const WindowBox = ({
         setAnimationState('minimizing');
         
         // After animation completes, set to minimized
-        setTimeout(() => {
-          setAnimationState('minimized');
+        animationRef.current = setTimeout(() => {
+          if (windowRef.current) {
+            setAnimationState('minimized');
+          }
         }, 300);
       }
     }
+    
+    // Cleanup function to cancel any pending animations
+    return () => {
+      if (animationRef.current) {
+        clearTimeout(animationRef.current);
+      }
+    };
   }, [isOpen, initialPosition, isMaximized, width, height]);
 
   // Get position near the navbar for animations
@@ -122,7 +162,7 @@ const WindowBox = ({
       };
     }
     // Fallback position
-    return { x: window.innerWidth / 2, y: window.innerHeight - 50 };
+    return { x: window.innerWidth / 2, y: 0 };
   };
 
   // Update parent component when position changes
@@ -139,7 +179,7 @@ const WindowBox = ({
       return;
     }
     
-    if (!isMaximized && initialPosition !== null && animationState === 'open') {
+    if (!isMaximized && initialPosition !== null && initialPosition !== undefined && animationState === 'open') {
       setPosition(initialPosition);
       lastValidPosition.current = initialPosition;
     }
@@ -242,10 +282,18 @@ const WindowBox = ({
   };
 
   const handleMaximize = () => {
-    setIsMaximized(!isMaximized);
+    // Toggle maximized state
+    setIsMaximized(prevState => !prevState);
+    
+    // When maximizing, save current position first
     if (!isMaximized) {
       // Save current position before maximizing
       lastValidPosition.current = { ...position };
+      
+      // Bring window to front when maximizing
+      if (onFocus) {
+        onFocus();
+      }
     } else {
       // Restore position after un-maximizing
       setPosition(lastValidPosition.current);
@@ -260,6 +308,9 @@ const WindowBox = ({
     return null;
   }
 
+  // Ensure position is always a valid object with x and y properties
+  const safePosition = position || { x: 0, y: 0 };
+
   return (
     <div
       ref={windowRef}
@@ -267,8 +318,8 @@ const WindowBox = ({
       style={{
         width: isMaximized ? '100%' : width,
         height: isMaximized ? 'calc(100vh - 60px)' : height,
-        left: isMaximized ? 0 : position.x,
-        top: isMaximized ? 30 : position.y,
+        left: isMaximized ? 0 : safePosition.x,
+        top: isMaximized ? 30 : safePosition.y,
         zIndex: zIndex,
         cursor: isDragging ? 'grabbing' : 'default'
       }}

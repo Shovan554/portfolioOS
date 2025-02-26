@@ -3,10 +3,11 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #E5D9F2; /* Light lavender/purple background to match top menu */
+  background: #4376f4; /* Blue background color */
   border-top: 2px solid #000;
   z-index: 1000;
   height: 45px;
+  transition: background-color 0.3s ease; /* Add transition for smooth color change */
 }
 
 .nav-container {
@@ -22,7 +23,7 @@
 .nav-item {
   background: transparent;
   border: none;
-  color: #000; /* Black text to match top menu */
+  color: #ffffff; /* White text */
   cursor: pointer;
   font-family: 'YourFontName', sans-serif;
   font-size: 1.1rem;
@@ -50,12 +51,14 @@
   height: 40px;
   object-fit: contain;
   transition: all 0.3s ease;
-  filter: brightness(0); /* Makes the icon black */
+  /* Remove filter that makes icons white */
+  /* filter: brightness(0) invert(1); */
 }
 
 .nav-item.active .nav-icon,
 .nav-item:hover .nav-icon {
-  filter: brightness(0.8); /* Slightly darker icon on hover/active */
+  /* Remove filter that changes icon color on hover/active */
+  /* filter: brightness(0) invert(0.9); */
   transform: scale(1.1);
 }
 
@@ -90,13 +93,13 @@
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: rgb(20, 27, 3);
+  background: #ffff00; /* Yellow underline */
   transition: width 0.3s ease;
 }
 
 .nav-item.minimized::after {
   width: 100%;
-  background: rgb(20, 27, 3); /* Dark color for minimized windows */
+  background: #ffff00; /* Yellow for minimized windows */
   height: 4px; /* Made even thicker for better visibility */
 }
 
@@ -106,29 +109,32 @@
 }
 
 .nav-item.active {
-  color: rgb(20, 27, 3);
+  color: #ffff00; /* Yellow text for active */
 }
 
 .nav-item:hover {
-  color: rgb(20, 27, 3);
+  color: #ffff00; /* Yellow text on hover */
 }
 
-/* Dark mode styles for navbar */
+/* Dark mode styles for navbar - only change background */
 body.dark-mode .navbar {
-  background: rgba(30, 30, 30, 0.95); /* Black background in dark mode */
+  background: #000000; /* Black background in dark mode */
 }
 
+/* Remove the color override for nav items to keep original colors */
 body.dark-mode .nav-item {
-  color: #f0f0f0; /* White text in dark mode */
+  /* color: #ffffff; - removed to keep original colors */
 }
 
 body.dark-mode .nav-icon {
-  filter: brightness(0) invert(1); /* Makes the icon white in dark mode */
+  /* Remove filter that makes icons white in dark mode */
+  /* filter: brightness(0) invert(1); */
 }
 
 body.dark-mode .nav-item.active .nav-icon,
 body.dark-mode .nav-item:hover .nav-icon {
-  filter: brightness(0) invert(0.8); /* Slightly darker icon on hover/active in dark mode */
+  /* Remove filter that changes icon color on hover/active in dark mode */
+  /* filter: brightness(0) invert(0.8); */
 }
 
 body.dark-mode .nav-item::after,

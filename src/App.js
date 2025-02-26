@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import LoadingPage from './pages/LoadingPage';
 import Desktop from './pages/Desktop';
@@ -131,9 +131,22 @@ function App() {
     }
   };
   
-  // Handle window opening
+  // Add a debounce ref to prevent multiple window opens
+  const isNavigating = useRef(false);
+  const navigationTimeout = useRef(null);
+  
+  // Handle window opening with debouncing
   const handleOpenWindow = (path) => {
     console.log(`Opening window: ${path}`);
+    
+    // If already navigating, cancel
+    if (isNavigating.current) {
+      console.log("Navigation already in progress, ignoring request");
+      return;
+    }
+    
+    // Set navigating flag
+    isNavigating.current = true;
     
     // If window is not open, open it
     if (!openWindows[path]) {
@@ -150,6 +163,15 @@ function App() {
     if (location.pathname !== path) {
       navigate(path, { replace: true });
     }
+    
+    // Clear navigation flag after a short delay
+    if (navigationTimeout.current) {
+      clearTimeout(navigationTimeout.current);
+    }
+    
+    navigationTimeout.current = setTimeout(() => {
+      isNavigating.current = false;
+    }, 500); // Prevent new navigation for 500ms
   };
   
   // Bring window to front when navigating to it
@@ -163,6 +185,15 @@ function App() {
       if (path === '/desktop') {
         return;
       }
+      
+      // Skip if already navigating
+      if (isNavigating.current) {
+        console.log("Navigation already in progress, skipping effect");
+        return;
+      }
+      
+      // Set navigating flag
+      isNavigating.current = true;
       
       // Only open the window if it's not already open AND the path is not empty
       if (path && path !== '' && !openWindows[path]) {
@@ -179,6 +210,15 @@ function App() {
       if (path && windowZIndex[path]) {
         bringWindowToFront(path);
       }
+      
+      // Clear navigation flag after a short delay
+      if (navigationTimeout.current) {
+        clearTimeout(navigationTimeout.current);
+      }
+      
+      navigationTimeout.current = setTimeout(() => {
+        isNavigating.current = false;
+      }, 500); // Prevent new navigation for 500ms
     }
   }, [location.pathname, isLoading]);
   

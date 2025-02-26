@@ -12,7 +12,7 @@
 .loading-title {
   margin-top:200px;
   font-size: 2.5rem;
-  color: #243A62;
+  color: #000000; /* Changed to black for contrast on blue background */
   text-align: center;
   font-weight: 700;
   letter-spacing: 1px;
@@ -36,7 +36,7 @@
 
 .continue-text {
   font-size: 1.2rem;
-  color: #243A62;
+  color: #000000; /* Changed to black for contrast on blue background */
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
   animation: pulse 1.5s infinite;
@@ -59,7 +59,7 @@
   }
 }
 
-/* Dark mode adjustments */
+/* Dark mode adjustments - keep text white in dark mode */
 body.dark-mode .loading-title {
   color: #fff;
 }
