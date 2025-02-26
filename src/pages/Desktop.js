@@ -5,12 +5,14 @@ import lightBackground from '../assets/images/windows.jpg'; // Light mode backgr
 import darkBackground from '../assets/images/dark.jpg'; // Dark mode background
 import DesktopIcon from '../components/DesktopIcon'; // Import the DesktopIcon component
 
-// Import icon for Flappy Dunk
-import gameIcon from '../assets/icons/game.png'; // You may need to create/import this icon
+// Import icons
+import gameIcon from '../assets/icons/game.png'; // Flappy Dunk icon
+import terminalIcon from '../assets/icons/terminal.png'; // Terminal icon
 
 const Desktop = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [iconPosition, setIconPosition] = useState({ x: 0, y: 0 });
+  const [flappyIconPosition, setFlappyIconPosition] = useState({ x: 0, y: 0 });
+  const [terminalIconPosition, setTerminalIconPosition] = useState({ x: 0, y: 0 });
   const navigate = useNavigate();
 
   // Check for dark mode and update state when it changes
@@ -39,35 +41,51 @@ const Desktop = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Calculate and update icon position based on window dimensions
+  // Calculate and update icon positions based on window dimensions
   useEffect(() => {
-    const updateIconPosition = () => {
-      // Position the icon in the top right corner with some padding
-      const x = Math.max(window.innerWidth - 100, 20); // At least 20px from left
-      const y = 50; // 50px from top
-      setIconPosition({ x, y });
+    const updateIconPositions = () => {
+      // Position the Flappy Dunk icon in the top right corner with some padding
+      const flappyX = Math.max(window.innerWidth - 100, 20); // At least 20px from left
+      const flappyY = 50; // 50px from top
+      setFlappyIconPosition({ x: flappyX, y: flappyY });
+      
+      // Position the Terminal icon below the Flappy Dunk icon
+      const terminalX = flappyX; // Same X position as Flappy Dunk
+      const terminalY = flappyY + 120; // 120px below Flappy Dunk (accounting for icon height)
+      setTerminalIconPosition({ x: terminalX, y: terminalY });
     };
 
-    // Set initial position
-    updateIconPosition();
+    // Set initial positions
+    updateIconPositions();
 
-    // Update position when window is resized
-    window.addEventListener('resize', updateIconPosition);
+    // Update positions when window is resized
+    window.addEventListener('resize', updateIconPositions);
 
     // Cleanup
-    return () => window.removeEventListener('resize', updateIconPosition);
+    return () => window.removeEventListener('resize', updateIconPositions);
   }, []);
 
   // Handle icon click to open the Flappy Dunk window
   const handleFlappyDunkClick = () => {
     console.log('Opening Flappy Dunk window');
     // This should connect to your window management system in App.js
-    // For now, we'll assume there's a route or window handler for '/flappydunk'
     if (window.handleOpenWindow) {
       window.handleOpenWindow('/flappydunk');
     } else {
       // Fallback if the global handler isn't available
       navigate('/flappydunk');
+    }
+  };
+
+  // Handle icon click to open the Terminal window
+  const handleTerminalClick = () => {
+    console.log('Opening Terminal window');
+    // This should connect to your window management system in App.js
+    if (window.handleOpenWindow) {
+      window.handleOpenWindow('/terminal');
+    } else {
+      // Fallback if the global handler isn't available
+      navigate('/terminal');
     }
   };
 
@@ -84,7 +102,15 @@ const Desktop = () => {
         icon={gameIcon} 
         title="Flappy Dunk" 
         onClick={handleFlappyDunkClick} 
-        position={iconPosition}
+        position={flappyIconPosition}
+      />
+      
+      {/* Terminal Desktop Icon */}
+      <DesktopIcon 
+        icon={terminalIcon} 
+        title="Terminal" 
+        onClick={handleTerminalClick} 
+        position={terminalIconPosition}
       />
     </div>
   );

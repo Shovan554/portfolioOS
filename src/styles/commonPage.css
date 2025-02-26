@@ -15,6 +15,7 @@
   padding: 16px;
   min-height: 300px;
   min-width: 400px;
+  text-align: left; /* Explicitly align text to the left */
 }
 
 .page-content h1 {
@@ -22,11 +23,13 @@
   color: #01a7a8;
   font-size: 24px;
   margin-bottom: 16px;
+  text-align: left; /* Ensure headings are left-aligned */
 }
 
 .page-content p {
   line-height: 1.6;
   color: #333;
+  text-align: left; /* Ensure paragraphs are left-aligned */
 }
 
 /* Skills Grid Layout */

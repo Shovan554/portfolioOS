@@ -9,6 +9,7 @@ import ExperiencePage from './pages/ExperiencePage';
 import EducationPage from './pages/EducationPage';
 import ProjectsPage from './pages/ProjectsPage';
 import FlappyDunkGame from './pages/FlappyDunkGame';
+import Terminal from './pages/Terminal';
 import NavBar from './components/navBar';
 import TopMenuBar from './components/TopMenuBar';
 import './App.css';
@@ -27,7 +28,8 @@ function App() {
     '/experience': false,
     '/education': false,
     '/projects': false,
-    '/flappydunk': false
+    '/flappydunk': false,
+    '/terminal': false
   });
   
   // Add state for help box
@@ -46,7 +48,8 @@ function App() {
     '/experience': false,
     '/education': false,
     '/projects': false,
-    '/flappydunk': false
+    '/flappydunk': false,
+    '/terminal': false
   });
   
   // Track z-index for each window
@@ -57,7 +60,8 @@ function App() {
     '/experience': 13,
     '/education': 14,
     '/projects': 15,
-    '/flappydunk': 16
+    '/flappydunk': 16,
+    '/terminal': 17
   });
   
   // Track window positions - initialize with centered positions
@@ -69,11 +73,12 @@ function App() {
     '/experience': null,
     '/education': null,
     '/projects': null,
-    '/flappydunk': null
+    '/flappydunk': null,
+    '/terminal': null
   });
   
   // Current highest z-index
-  const [highestZIndex, setHighestZIndex] = useState(16);
+  const [highestZIndex, setHighestZIndex] = useState(17);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -385,6 +390,17 @@ function App() {
           onPositionChange={(position) => updateWindowPosition('/flappydunk', position)}
         />
         
+        {/* Add Terminal Window */}
+        <Terminal 
+          isOpen={openWindows['/terminal'] && !minimizedWindows['/terminal']} 
+          setIsOpen={(isOpen) => isOpen ? handleRestoreWindow('/terminal') : handleMinimizeWindow('/terminal')}
+          onClose={() => handleCloseWindow('/terminal')}
+          zIndex={windowZIndex['/terminal']}
+          onFocus={() => bringWindowToFront('/terminal')}
+          initialPosition={windowPositions['/terminal']}
+          onPositionChange={(position) => updateWindowPosition('/terminal', position)}
+        />
+        
         {/* Hidden Routes for navigation */}
         <div style={{ display: 'none' }}>
           <Routes>
@@ -396,6 +412,7 @@ function App() {
             <Route path="/education" element={<div />} />
             <Route path="/projects" element={<div />} />
             <Route path="/flappydunk" element={<div />} />
+            <Route path="/terminal" element={<div />} />
           </Routes>
         </div>
       </div>
@@ -449,3 +466,8 @@ function App() {
 }
 
 export default App;
+
+
+
+
+

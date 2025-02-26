@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import '../styles/navBar.css';
@@ -8,7 +7,9 @@ import skillsIcon from '../assets/icons/skills.png';
 import proficiencyIcon from '../assets/icons/proficiency.png';
 import experienceIcon from '../assets/icons/experience.png';
 import educationIcon from '../assets/icons/education.png';
-import gameIcon from '../assets/icons/game.png'; // Import game icon for Flappy Dunk
+import projectsIcon from '../assets/icons/projects.png'; // Add projects icon
+import gameIcon from '../assets/icons/game.png';
+import terminalIcon from '../assets/icons/terminal.png'; // Add terminal icon
 
 const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpenWindow, windowZIndex }) => {
   const location = useLocation();
@@ -47,18 +48,20 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
     }
   };
 
-  // Define pinned navItems with proper null checks (excluding Flappy Dunk)
+  // Define pinned navItems with proper null checks
   const pinnedNavItems = [
     { name: 'Home', path: '/', icon: homeIcon },
     { name: 'Skills', path: '/skills', icon: skillsIcon },
     { name: 'Proficiency', path: '/proficiency', icon: proficiencyIcon },
     { name: 'Experience', path: '/experience', icon: experienceIcon },
-    { name: 'Education', path: '/education', icon: educationIcon }
+    { name: 'Education', path: '/education', icon: educationIcon },
+    
   ];
 
   // Define dynamic items that only appear when open
   const dynamicNavItems = [
-    { name: 'Flappy Dunk', path: '/flappydunk', icon: gameIcon }
+    { name: 'Flappy Dunk', path: '/flappydunk', icon: gameIcon },
+    { name: 'Terminal', path: '/terminal', icon: terminalIcon } // Add Terminal to dynamic items
   ];
 
   return (
@@ -117,3 +120,6 @@ const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpen
 };
 
 export default NavBar;
+
+
+
