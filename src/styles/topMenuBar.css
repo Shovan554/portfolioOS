@@ -551,6 +551,34 @@ body.dark-mode .profile-action-btn:hover {
   color: #ffffff; /* Keep white text on hover */
 }
 
+/* Keep the menu label highlighted while its dropdown is open */
+.menu-item-dropdown:hover > .menu-item {
+  color: #ffff00;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Normalize button dropdown items to look like links */
+.menu-item-dropdown .dropdown-item {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: #ffffff;
+  font: inherit;
+}
+
+/* Ensure hover is consistent across anchors and buttons */
+.menu-item-dropdown .dropdown-item:hover {
+  color: #ffff00;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Optional: remove focus outline if you don't want it (keep for accessibility if possible) */
+.menu-item-dropdown .dropdown-item:focus {
+  outline: none;
+}
+
 @media (max-width: 768px) {
   .menu-item {
     font-size: 0.75rem; /* Reduced from 0.9rem */

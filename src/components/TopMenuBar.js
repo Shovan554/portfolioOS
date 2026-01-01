@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/topMenuBar.css';
-// Import icons for battery and wifi
 import batteryFullIcon from '../assets/icons/battery-full.png';
 import batteryLowIcon from '../assets/icons/battery-low.png';
 import wifiOnIcon from '../assets/icons/wifi-on.png';
 import wifiOffIcon from '../assets/icons/wifi-off.png';
-// Import profile picture
 import profilePic from '../assets/images/pp.PNG';
-// Import weather icons
 import sunnyIcon from '../assets/icons/sunny.png';
 import cloudyIcon from '../assets/icons/cloudy.png';
 import rainyIcon from '../assets/icons/rainy.png';
 import ShutdownScreen from './ShutdownScreen';
+import HackathonPopup from './HackathonPopup';
+import resumePDF from '../assets/resume.pdf';
 
 const TopMenuBar = () => {
   const [dateTime, setDateTime] = useState(new Date());
   const [showSocialsDropdown, setShowSocialsDropdown] = useState(false);
   const [showProjectsDropdown, setShowProjectsDropdown] = useState(false);
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
+  const [showHackathonsDropdown, setShowHackathonsDropdown] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   // Add states for battery and wifi
   const [batteryLevel, setBatteryLevel] = useState(100);
@@ -44,6 +44,8 @@ const TopMenuBar = () => {
   const [locationPermission, setLocationPermission] = useState('prompt'); // 'prompt', 'granted', 'denied'
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
   const [isShuttingDown, setIsShuttingDown] = useState(false);
+  const [showHackathonPopup, setShowHackathonPopup] = useState(false);
+  const [selectedHackathon, setSelectedHackathon] = useState(null);
 
   const handleLocationPermission = (granted) => {
     setShowLocationPrompt(false);
@@ -60,6 +62,7 @@ const TopMenuBar = () => {
   const socialsDropdownRef = useRef(null);
   const projectsDropdownRef = useRef(null);
   const settingsDropdownRef = useRef(null);
+  const hackathonsDropdownRef = useRef(null);
   const batteryInfoRef = useRef(null);
   const wifiInfoRef = useRef(null);
   const profileDropdownRef = useRef(null);
@@ -297,9 +300,66 @@ const TopMenuBar = () => {
     );
   };
 
+  const handleHackathonClick = (hackathon) => {
+    setSelectedHackathon(hackathon);
+    setShowHackathonPopup(true);
+    setShowHackathonsDropdown(false);
+  };
+
+  const renderHackathonPopup = () => {
+    if (!showHackathonPopup || !selectedHackathon) return null;
+
+    const hackathonData = {
+      hophacks: {
+        title: 'HopHacks 2025 | Second Place',
+        description: (
+          <>
+            Built a <strong>full-stack EHR-style web app</strong> that connects doctors and patients in one place. 
+            It includes secure patient profiles, appointment/visit tracking, and a chat-style workflow for sharing updates and questions.
+            <br/><br/>
+            On top of that, we added an <strong>AI-powered clinical assistant</strong> to help summarize patient info (symptoms, history, recent metrics) 
+            and support faster decision-making.
+            <br/><br/>
+            We also implemented <strong>continuous health monitoring</strong>, so patient vitals and trends can be viewed over time to spot 
+            early warning signs and trigger alerts when something looks abnormal.
+          </>
+        ),
+        github: 'https://github.com/Shovan554/medlink'
+      },
+      cougarhacks: {
+        title: 'CougarHacks 2025 | First Place',
+        description: (
+          <>
+            Built an <strong>AI-powered Apple Watch companion</strong> that turns wearable signals into actionable health insights.
+            <br/><br/>
+            The system collects key metrics (like heart rate and activity signals), organizes them into clear trends, and generates 
+            <strong> personalized summaries</strong> so users can understand what\'s changing and why it matters.
+            <br/><br/>
+            We focused on making the insights feel <strong>practical</strong>—highlighting unusual patterns, surfacing simple recommendations, 
+            and giving a quick "daily health check" view that\'s easy to read without digging through raw data.
+          </>
+        ),
+        github: 'https://github.com/Shovan554/PulseX-AI'
+      }
+    };
+
+    const data = hackathonData[selectedHackathon];
+
+    return (
+      <HackathonPopup
+        title={data.title}
+        description={data.description}
+        github={data.github}
+        isOpen={showHackathonPopup}
+        onClose={() => setShowHackathonPopup(false)}
+      />
+    );
+  };
+
   return (
     <div className="top-menubar">
       {renderLocationPrompt()}
+      {renderHackathonPopup()}
       <div className="menubar-container">
         <div className="left-menu">
           <div 
@@ -365,13 +425,39 @@ const TopMenuBar = () => {
             )}
           </div>
           <a 
-            href="https://docs.google.com/document/d/1FX2dabPGTTywadxxvj0YFbiqVcKzoJRUk-xUebIUSlE/edit?usp=sharing" 
+            href={resumePDF} 
             target="_blank" 
             rel="noopener noreferrer"
             className="menu-item"
           >
             Resume
           </a>
+          <div 
+            className="menu-item-dropdown"
+            ref={hackathonsDropdownRef}
+            onMouseEnter={() => setShowHackathonsDropdown(true)}
+            onMouseLeave={() => setShowHackathonsDropdown(false)}
+          >
+            <span className="menu-item">
+              Hackathons
+            </span>
+            {showHackathonsDropdown && (
+              <div className="dropdown-menu">
+                <button 
+                  className="dropdown-item"
+                  onClick={() => handleHackathonClick('hophacks')}
+                >
+                  HopHacks 2025 | Second Place
+                </button>
+                <button 
+                  className="dropdown-item"
+                  onClick={() => handleHackathonClick('cougarhacks')}
+                >
+                  CougarHacks 2025 | First Place
+                </button>
+              </div>
+            )}
+          </div>
           <div 
             className="menu-item-dropdown"
             ref={socialsDropdownRef}

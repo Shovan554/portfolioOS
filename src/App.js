@@ -10,6 +10,8 @@ import EducationPage from './pages/EducationPage';
 import ProjectsPage from './pages/ProjectsPage';
 import FlappyDunkGame from './pages/FlappyDunkGame';
 import Terminal from './pages/Terminal';
+import HopHacks2025Page from './pages/HopHacks2025Page';
+import CougarHacks2025Page from './pages/CougarHacks2025Page';
 import NavBar from './components/navBar';
 import TopMenuBar from './components/TopMenuBar';
 import './App.css';
@@ -32,7 +34,9 @@ function App() {
     '/education': false,
     '/projects': false,
     '/flappydunk': false,
-    '/terminal': false
+    '/terminal': false,
+    '/hophacks2025': false,
+    '/cougarhacks2025': false
   });
   
   // Add state for window management
@@ -44,7 +48,9 @@ function App() {
     '/education': false,
     '/projects': false,
     '/flappydunk': false,
-    '/terminal': false
+    '/terminal': false,
+    '/hophacks2025': false,
+    '/cougarhacks2025': false
   });
   
   const [windowZIndex, setWindowZIndex] = useState({
