@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/hackathonPopup.css';
 
 const HackathonPopup = ({ 
@@ -89,7 +89,7 @@ const HackathonPopup = ({
     }
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (isDragging) {
       const newX = e.clientX - dragOffset.x;
       const newY = e.clientY - dragOffset.y;
@@ -104,14 +104,14 @@ const HackathonPopup = ({
       
       setPosition(newPosition);
     }
-  };
+  }, [isDragging, dragOffset, width]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (isDragging) {
       setIsDragging(false);
       document.body.classList.remove('dragging');
     }
-  };
+  }, [isDragging]);
 
   useEffect(() => {
     if (isDragging) {
@@ -128,7 +128,7 @@ const HackathonPopup = ({
       document.removeEventListener('mouseup', handleMouseUp);
       document.body.classList.remove('dragging');
     };
-  }, [isDragging]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   if (animationState === 'closed' && !isOpen) {
     return null;

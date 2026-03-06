@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import '../styles/shutdownScreen.css';
 // Import the same background images used in Desktop.js
 import lightBackground from '../assets/images/windows.jpg'; // Light mode background
@@ -15,8 +15,24 @@ const ShutdownScreen = ({ onComplete }) => {
   const progressCompleteRef = useRef(false);
   const shutdownTimerRef = useRef(null);
 
+  // Function to complete the shutdown process
+  const completeShutdown = useCallback(() => {
+    // Clear any pending timers
+    if (shutdownTimerRef.current) {
+      clearTimeout(shutdownTimerRef.current);
+    }
+    
+    if (onComplete) {
+      console.log("Calling onComplete callback");
+      onComplete();
+    } else {
+      console.log("Refreshing page");
+      window.location.reload();
+    }
+  }, [onComplete]);
+
   // Function to play the shutdown sound with better error handling
-  const playShutdownSound = () => {
+  const playShutdownSound = useCallback(() => {
     if (hasPlayedRef.current) return; // Prevent multiple play attempts
     
     try {
@@ -73,23 +89,7 @@ const ShutdownScreen = ({ onComplete }) => {
       // Mark as completed anyway to not block shutdown
       soundCompletedRef.current = true;
     }
-  };
-
-  // Function to complete the shutdown process
-  const completeShutdown = () => {
-    // Clear any pending timers
-    if (shutdownTimerRef.current) {
-      clearTimeout(shutdownTimerRef.current);
-    }
-    
-    if (onComplete) {
-      console.log("Calling onComplete callback");
-      onComplete();
-    } else {
-      console.log("Refreshing page");
-      window.location.reload();
-    }
-  };
+  }, [completeShutdown]);
 
   useEffect(() => {
     console.log("ShutdownScreen mounted");
@@ -156,7 +156,7 @@ const ShutdownScreen = ({ onComplete }) => {
         }
       }
     };
-  }, [onComplete]);
+  }, [playShutdownSound, completeShutdown]);
 
   // Calculate the stroke-dashoffset based on progress
   // The formula is: total length - (progress percentage * total length / 100)

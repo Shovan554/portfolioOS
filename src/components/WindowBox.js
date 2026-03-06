@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/windowBox.css';
 
 const WindowBox = ({ 
@@ -150,7 +150,7 @@ const WindowBox = ({
         clearTimeout(animationRef.current);
       }
     };
-  }, [isOpen, initialPosition, isMaximized, width, height]);
+  }, [isOpen, initialPosition, isMaximized, width, height, animationState]);
 
   // Get position near the navbar for animations
   const getNavbarPosition = () => {
@@ -218,7 +218,7 @@ const WindowBox = ({
     }
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (isDragging) {
       const newX = e.clientX - dragOffset.x;
       const newY = e.clientY - dragOffset.y;
@@ -236,9 +236,9 @@ const WindowBox = ({
       setPosition(newPosition);
       lastValidPosition.current = newPosition;
     }
-  };
+  }, [isDragging, dragOffset, width]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (isDragging) {
       setIsDragging(false);
       document.body.classList.remove('dragging');
@@ -254,7 +254,7 @@ const WindowBox = ({
         isUserDragging.current = false;
       }, 100);
     }
-  };
+  }, [isDragging, onPositionChange, position]);
 
   // Add and remove event listeners for drag
   useEffect(() => {
@@ -272,7 +272,7 @@ const WindowBox = ({
       document.removeEventListener('mouseup', handleMouseUp);
       document.body.classList.remove('dragging');
     };
-  }, [isDragging, position]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const handleClose = () => {
     if (onClose) onClose();

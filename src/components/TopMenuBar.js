@@ -231,12 +231,6 @@ const TopMenuBar = () => {
     window.location.reload();
   };
 
-  // Handle Logout - alternative approaches
-  const handleLogout = () => {
-    // Option 1: Redirect to a blank page or a logout confirmation page
-    window.location.href = "about:blank";
-  };
-
   // Render weather content based on loading/error state
   const renderWeatherContent = () => {
     if (isWeatherLoading) {

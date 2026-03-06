@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import LoadingPage from './pages/LoadingPage';
 import Desktop from './pages/Desktop';
 import HomePage from './pages/HomePage';
@@ -11,8 +11,6 @@ import ProjectsPage from './pages/ProjectsPage';
 import FlappyDunkGame from './pages/FlappyDunkGame';
 import Terminal from './pages/Terminal';
 import PhotosPage from './pages/PhotosPage';
-import HopHacks2025Page from './pages/HopHacks2025Page';
-import CougarHacks2025Page from './pages/CougarHacks2025Page';
 import NavBar from './components/navBar';
 import TopMenuBar from './components/TopMenuBar';
 import './App.css';
@@ -22,11 +20,9 @@ import MobileWarning from './components/MobileWarning';
 
 function App() {
   const navigate = useNavigate();
-  const location = useLocation();
   
   // Force isLoading to true on initial render
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingStartTime] = useState(Date.now());
   const [minimizedWindows, setMinimizedWindows] = useState({
     '/': false,
     '/skills': false,
@@ -92,7 +88,7 @@ function App() {
   const [showMobileWarning, setShowMobileWarning] = useState(false);
 
   // Window management functions
-  const handleOpenWindow = (path) => {
+  const handleOpenWindow = useCallback((path) => {
     // Set the window to open without affecting other windows
     setOpenWindows(prevOpenWindows => ({
       ...prevOpenWindows,
@@ -112,29 +108,31 @@ function App() {
     
     // Navigate to the path
     navigate(path);
-  };
+  }, [navigate, minimizedWindows]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleCloseWindow = (path) => {
-    setOpenWindows({ ...openWindows, [path]: false });
-  };
+  const handleCloseWindow = useCallback((path) => {
+    setOpenWindows(prev => ({ ...prev, [path]: false }));
+  }, []);
 
-  const handleMinimizeWindow = (path) => {
-    setMinimizedWindows({ ...minimizedWindows, [path]: true });
-  };
+  const handleMinimizeWindow = useCallback((path) => {
+    setMinimizedWindows(prev => ({ ...prev, [path]: true }));
+  }, []);
 
-  const handleRestoreWindow = (path) => {
-    setMinimizedWindows({ ...minimizedWindows, [path]: false });
+  const handleRestoreWindow = useCallback((path) => {
+    setMinimizedWindows(prev => ({ ...prev, [path]: false }));
     bringWindowToFront(path);
-  };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const bringWindowToFront = (path) => {
-    const highestZ = Math.max(...Object.values(windowZIndex));
-    setWindowZIndex({ ...windowZIndex, [path]: highestZ + 1 });
-  };
+  const bringWindowToFront = useCallback((path) => {
+    setWindowZIndex(prev => {
+      const highestZ = Math.max(...Object.values(prev));
+      return { ...prev, [path]: highestZ + 1 };
+    });
+  }, []);
 
-  const updateWindowPosition = (path, position) => {
-    setWindowPositions({ ...windowPositions, [path]: position });
-  };
+  const updateWindowPosition = useCallback((path, position) => {
+    setWindowPositions(prev => ({ ...prev, [path]: position }));
+  }, []);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -143,15 +141,16 @@ function App() {
   };
 
   // Add this function to your App component
-  const closeAllWindows = () => {
+  const closeAllWindows = useCallback(() => {
     // Get all open window paths
-    const openWindowPaths = Object.keys(openWindows).filter(path => openWindows[path]);
-    
-    // Close each window
-    openWindowPaths.forEach(path => {
-      handleCloseWindow(path);
+    setOpenWindows(prev => {
+      const newOpenWindows = { ...prev };
+      Object.keys(newOpenWindows).forEach(path => {
+        newOpenWindows[path] = false;
+      });
+      return newOpenWindows;
     });
-  };
+  }, []);
 
   // Add this useEffect for mobile warning
   useEffect(() => {
@@ -178,7 +177,7 @@ function App() {
   useEffect(() => {
     window.handleOpenWindow = handleOpenWindow;
     window.closeAllWindows = closeAllWindows;
-  }, []);
+  }, [handleOpenWindow, closeAllWindows]);
 
   // Render the mobile warning before anything else
   if (showMobileWarning) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import homeIcon from "../assets/icons/home.png"; // Import the home icon
 import startupSound from "../assets/sounds/startup.mp3"; // Import the startup sound
 import "../styles/loadingAnimation.css";
@@ -13,6 +13,45 @@ const LoadingAnimation = ({ onComplete }) => {
   
   // Add console logs for debugging
   console.log("LoadingAnimation rendering, isComplete:", isAnimationComplete, "waitingForKeyPress:", waitingForKeyPress);
+
+  // Function to play the startup sound
+  const playStartupSound = useCallback(() => {
+    if (!audioRef.current || isPlayingRef.current) return;
+    
+    try {
+      console.log("Attempting to play startup sound");
+      isPlayingRef.current = true;
+      
+      // Reset the audio to the beginning
+      audioRef.current.currentTime = 0;
+      
+      // Play the startup sound
+      const playPromise = audioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log("Audio playback started successfully");
+            // Call onComplete after a short delay to ensure sound starts playing
+            setTimeout(() => {
+              if (!hasCompletedRef.current) return;
+              onComplete();
+            }, 300);
+          })
+          .catch(error => {
+            console.error("Error playing startup sound:", error);
+            isPlayingRef.current = false;
+            // If audio fails, still complete the loading
+            onComplete();
+          });
+      }
+    } catch (error) {
+      console.error("Error with audio playback:", error);
+      isPlayingRef.current = false;
+      // If audio fails, still complete the loading
+      onComplete();
+    }
+  }, [onComplete]);
 
   useEffect(() => {
     console.log("LoadingAnimation mounted");
@@ -92,46 +131,7 @@ const LoadingAnimation = ({ onComplete }) => {
         }
       }
     };
-  }, [waitingForKeyPress, onComplete]);
-
-  // Function to play the startup sound
-  const playStartupSound = () => {
-    if (!audioRef.current || isPlayingRef.current) return;
-    
-    try {
-      console.log("Attempting to play startup sound");
-      isPlayingRef.current = true;
-      
-      // Reset the audio to the beginning
-      audioRef.current.currentTime = 0;
-      
-      // Play the startup sound
-      const playPromise = audioRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log("Audio playback started successfully");
-            // Call onComplete after a short delay to ensure sound starts playing
-            setTimeout(() => {
-              if (!hasCompletedRef.current) return;
-              onComplete();
-            }, 300);
-          })
-          .catch(error => {
-            console.error("Error playing startup sound:", error);
-            isPlayingRef.current = false;
-            // If audio fails, still complete the loading
-            onComplete();
-          });
-      }
-    } catch (error) {
-      console.error("Error with audio playback:", error);
-      isPlayingRef.current = false;
-      // If audio fails, still complete the loading
-      onComplete();
-    }
-  };
+  }, [waitingForKeyPress, onComplete, playStartupSound]);
 
   return (
     <div className="loading-animation-container">

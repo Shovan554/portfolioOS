@@ -5,7 +5,6 @@ import '../styles/loadingPage.css';
 import powerIcon from '../assets/icons/power.png'; // Import the power icon
 
 const LoadingPage = ({ onComplete }) => {
-  const [isRendered, setIsRendered] = useState(false);
   const [showLoadingWindow, setShowLoadingWindow] = useState(false);
   
   // Add console log to debug
@@ -14,7 +13,6 @@ const LoadingPage = ({ onComplete }) => {
   // Force complete loading after timeout (fallback)
   useEffect(() => {
     console.log("LoadingPage mounted");
-    setIsRendered(true);
     
     const timer = setTimeout(() => {
       console.log("Forcing loading complete after timeout");

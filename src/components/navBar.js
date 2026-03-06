@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import '../styles/navBar.css';
 // Import icons from correct path
 import homeIcon from '../assets/icons/home.png';
@@ -7,14 +6,11 @@ import skillsIcon from '../assets/icons/skills.png';
 import proficiencyIcon from '../assets/icons/proficiency.png';
 import experienceIcon from '../assets/icons/experience.png';
 import educationIcon from '../assets/icons/education.png';
-import projectsIcon from '../assets/icons/projects.png'; // Add projects icon
 import gameIcon from '../assets/icons/game.png';
 import terminalIcon from '../assets/icons/terminal.png'; // Add terminal icon
 import photosIcon from '../assets/icons/projects.png'; // Using projects as photos icon for now
 
 const NavBar = ({ minimizedWindows, setMinimizedWindows, openWindows, handleOpenWindow, windowZIndex }) => {
-  const location = useLocation();
-
   // Find the window with the highest z-index (the one on top)
   const getTopWindowPath = () => {
     let topPath = '';
