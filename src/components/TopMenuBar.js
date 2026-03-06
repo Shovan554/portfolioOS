@@ -340,6 +340,18 @@ const TopMenuBar = () => {
           </>
         ),
         github: 'https://github.com/Shovan554/PulseX-AI'
+      },
+      hackaturi: {
+        title: 'HackAtURI - URI | First Place & Best Use of Presage',
+        description: (
+          <>
+            Built <strong>Respondr</strong>, an AI-powered emergency response platform ingesting live wearable vitals and auto-initiating doctor escalation calls.
+            <br/><br/>
+            The platform provides <strong>real-time monitoring</strong> of critical health metrics and uses AI to detect life-threatening situations, 
+            ensuring immediate response when every second counts.
+          </>
+        ),
+        github: 'https://github.com/Shovan554/Respondrr'
       }
     };
 
@@ -455,6 +467,12 @@ const TopMenuBar = () => {
                 >
                   CougarHacks 2025 | First Place
                 </button>
+                <button 
+                  className="dropdown-item"
+                  onClick={() => handleHackathonClick('hackaturi')}
+                >
+                  HackAtURI - URI | First Place
+                </button>
               </div>
             )}
           </div>
@@ -486,7 +504,7 @@ const TopMenuBar = () => {
                   LinkedIn
                 </a>
                 <a 
-                  href="https://www.instagram.com/shovan._._/" 
+                  href="https://www.instagram.com/shovan.raut/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="dropdown-item"

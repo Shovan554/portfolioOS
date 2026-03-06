@@ -8,11 +8,13 @@ import DesktopIcon from '../components/DesktopIcon'; // Import the DesktopIcon c
 // Import icons
 import gameIcon from '../assets/icons/game.png'; // Flappy Dunk icon
 import terminalIcon from '../assets/icons/terminal.png'; // Terminal icon
+import photosIcon from '../assets/icons/projects.png'; // Photos icon (using projects as folder)
 
 const Desktop = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [flappyIconPosition, setFlappyIconPosition] = useState({ x: 0, y: 0 });
   const [terminalIconPosition, setTerminalIconPosition] = useState({ x: 0, y: 0 });
+  const [photosIconPosition, setPhotosIconPosition] = useState({ x: 0, y: 0 });
   const navigate = useNavigate();
 
   // Check for dark mode and update state when it changes
@@ -53,6 +55,11 @@ const Desktop = () => {
       const terminalX = flappyX; // Same X position as Flappy Dunk
       const terminalY = flappyY + 120; // 120px below Flappy Dunk (accounting for icon height)
       setTerminalIconPosition({ x: terminalX, y: terminalY });
+
+      // Position the Photos icon below the Terminal icon
+      const photosX = flappyX;
+      const photosY = terminalY + 120;
+      setPhotosIconPosition({ x: photosX, y: photosY });
     };
 
     // Set initial positions
@@ -89,6 +96,16 @@ const Desktop = () => {
     }
   };
 
+  // Handle icon click to open the Photos window
+  const handlePhotosClick = () => {
+    console.log('Opening Photos window');
+    if (window.handleOpenWindow) {
+      window.handleOpenWindow('/photos');
+    } else {
+      navigate('/photos');
+    }
+  };
+
   return (
     <div className="desktop" style={{
       backgroundImage: `url(${isDarkMode ? darkBackground : lightBackground})`,
@@ -111,6 +128,14 @@ const Desktop = () => {
         title="Terminal" 
         onClick={handleTerminalClick} 
         position={terminalIconPosition}
+      />
+
+      {/* Photos Desktop Icon */}
+      <DesktopIcon 
+        icon={photosIcon} 
+        title="Photos" 
+        onClick={handlePhotosClick} 
+        position={photosIconPosition}
       />
     </div>
   );

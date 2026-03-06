@@ -10,6 +10,7 @@ import EducationPage from './pages/EducationPage';
 import ProjectsPage from './pages/ProjectsPage';
 import FlappyDunkGame from './pages/FlappyDunkGame';
 import Terminal from './pages/Terminal';
+import PhotosPage from './pages/PhotosPage';
 import HopHacks2025Page from './pages/HopHacks2025Page';
 import CougarHacks2025Page from './pages/CougarHacks2025Page';
 import NavBar from './components/navBar';
@@ -35,6 +36,7 @@ function App() {
     '/projects': false,
     '/flappydunk': false,
     '/terminal': false,
+    '/photos': false,
     '/hophacks2025': false,
     '/cougarhacks2025': false
   });
@@ -49,6 +51,7 @@ function App() {
     '/projects': false,
     '/flappydunk': false,
     '/terminal': false,
+    '/photos': false,
     '/hophacks2025': false,
     '/cougarhacks2025': false
   });
@@ -61,7 +64,8 @@ function App() {
     '/education': 1,
     '/projects': 1,
     '/flappydunk': 1,
-    '/terminal': 1
+    '/terminal': 1,
+    '/photos': 1
   });
   
   const [windowPositions, setWindowPositions] = useState({
@@ -72,7 +76,8 @@ function App() {
     '/education': { x: 300, y: 300 },
     '/projects': { x: 350, y: 350 },
     '/flappydunk': { x: 200, y: 100 }, // Updated position
-    '/terminal': { x: 250, y: 150 }    // Updated position
+    '/terminal': { x: 250, y: 150 },    // Updated position
+    '/photos': { x: 300, y: 200 }
   });
   
   // Add state for help box
@@ -289,6 +294,17 @@ function App() {
           initialPosition={windowPositions['/terminal']}
           onPositionChange={(position) => updateWindowPosition('/terminal', position)}
         />
+
+        {/* Add Photos Window */}
+        <PhotosPage 
+          isOpen={openWindows['/photos'] && !minimizedWindows['/photos']} 
+          setIsOpen={(isOpen) => isOpen ? handleRestoreWindow('/photos') : handleMinimizeWindow('/photos')}
+          onClose={() => handleCloseWindow('/photos')}
+          zIndex={windowZIndex['/photos']}
+          onFocus={() => bringWindowToFront('/photos')}
+          initialPosition={windowPositions['/photos']}
+          onPositionChange={(position) => updateWindowPosition('/photos', position)}
+        />
         
         {/* Hidden Routes for navigation */}
         <div style={{ display: 'none' }}>
@@ -302,6 +318,7 @@ function App() {
             <Route path="/projects" element={<div />} />
             <Route path="/flappydunk" element={<div />} />
             <Route path="/terminal" element={<div />} />
+            <Route path="/photos" element={<div />} />
           </Routes>
         </div>
       </div>

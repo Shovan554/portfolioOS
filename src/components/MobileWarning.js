@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/mobileWarning.css';
+import resumePDF from '../assets/resume.pdf';
 
 const MobileWarning = () => {
   return (
@@ -10,7 +11,7 @@ const MobileWarning = () => {
         <p>Please visit on a tablet (iPad) or laptop/desktop computer for the full experience.</p>
         <div className="warning-actions">
           <a 
-            href="https://docs.google.com/document/d/1FX2dabPGTTywadxxvj0YFbiqVcKzoJRUk-xUebIUSlE/edit?usp=sharing" 
+            href={resumePDF} 
             className="resume-link" 
             target="_blank" 
             rel="noopener noreferrer"
